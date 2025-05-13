@@ -1,4 +1,4 @@
-const words = [ 
+const words = [
     // Tiere
     "ELEFANT", "KATZE", "HUND", "PFERD", "SCHILDKRÖTE", "LÖWE", "TIGER", "PANDA", "KÄNGURU", "DELFIN",
     "GIRAFFE", "NASHORN", "ZEBRA", "AFFE", "FUCHS", "WOLF", "BÄR", "EULE", "SCHWAN", "PAPAGEI",

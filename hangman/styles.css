@@ -1,19 +1,35 @@
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    background: linear-gradient(45deg, #ff9a9e, #fad0c4);
-    color: #333;
     margin: 0;
     padding: 0;
+    background: repeating-radial-gradient(circle, #000000, #ffffff 10px, #221063 10px, #1e98c9 20px);
+    animation: illusion 2s infinite;
+}
+
+@keyframes illusion {
+    0% {
+        background-size: 20px 20px;
+    }
+
+    50% {
+        background-size: 40px 40px;
+    }
+
+    100% {
+        background-size: 20px 20px;
+    }
 }
 
 #game-container {
     max-width: 600px;
     margin: 50px auto;
     padding: 20px;
-    background: white;
+    background: rgba(255, 255, 255, 0.8);
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 2;
 }
 
 canvas {
