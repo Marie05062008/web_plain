@@ -1,0 +1,8 @@
+const words = [
+    "ELEFANT", "KATZE", "HUND", "PFERD", "SCHILDKRÖTE", "LÖWE", "TIGER", "PANDA", "KÄNGURU", "DELFIN",
+    "COMPUTER", "HANDY", "TISCH", "STUHL", "LAMPE", "FENSTER", "TÜR", "AUTO", "FLUGZEUG", "SCHLÜSSEL",
+    "PROGRAMMIERER", "LEHRER", "ARZT", "MECHAN// filepath: d:\000_Praktikanten\web_plain\script.js
+const words = [
+    "ELEFANT", "KATZE", "HUND", "PFERD", "SCHILDKRÖTE", "LÖWE", "TIGER", "PANDA", "KÄNGURU", "DELFIN",
+    "COMPUTER", "HANDY", "TISCH", "STUHL", "LAMPE", "FENSTER", "TÜR", "AUTO", "FLUGZEUG", "SCHLÜSSEL",
+    "PROGRAMMIERER", "LEHRER", "ARZT", "MECHANIKER", "KÜCHE", "BAD", "SCHLAFZIMMER", "WOHNZIMMER", "GARTEN", "BAUM", "BLUME",
