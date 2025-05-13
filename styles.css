@@ -1,0 +1,98 @@
+/* Allgemeine Stile */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #1e3c72, #2a5298, #1e8f72); /* Animierter Farbverlauf */
+    background-size: 300% 300%;
+    animation: gradientAnimation 8s ease infinite;
+    color: #ffffff;
+    text-align: center;
+}
+
+/* Animation für den Hintergrund */
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Header */
+header {
+    background: rgba(0, 0, 0, 0.7); /* Dunkler transparenter Hintergrund */
+    padding: 40px 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+header .header-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin: 0;
+    color: #ffffff;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+header p {
+    font-size: 1.2em;
+    margin: 10px 0 0;
+    color: #d1e8ff;
+}
+
+/* Hauptbereich */
+main {
+    padding: 40px 20px;
+}
+
+.game-link {
+    background: rgba(255, 255, 255, 0.1); /* Halbtransparenter Hintergrund */
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 600px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.game-link h2 {
+    font-size: 2em;
+    color: #ffffff;
+}
+
+.game-link p {
+    font-size: 1.2em;
+    margin: 10px 0 20px;
+    color: #d1e8ff;
+}
+
+.game-link .button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    color: white;
+    background: #28a745; /* Grüner Button */
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.game-link .button:hover {
+    background: #218838;
+}
+
+/* Footer */
+footer {
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+footer p {
+    margin: 0;
+    font-size: 0.9em;
+}
