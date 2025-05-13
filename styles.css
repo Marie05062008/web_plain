@@ -96,3 +96,22 @@ footer p {
     margin: 0;
     font-size: 0.9em;
 }
+/* Zurück-Button */
+.back-button {
+    display: inline-block;
+    margin: 20px;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    color: white;
+    background: #007bff; /* Blau */
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.back-button:hover {
+    background: #0056b3; /* Dunkleres Blau beim Hover */
+}
