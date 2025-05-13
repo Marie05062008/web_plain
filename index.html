@@ -1,39 +1,208 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Test-Page</title>
-<style>
-    body {
-                background: lightgreen
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galgenmännchen</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background: repeating-radial-gradient(circle, #ffcccb, #ffcccb 10px, #ffffff 10px, #ffffff 20px);
+            animation: illusion 2s infinite;
+        }
 
-</style>
+        @keyframes illusion {
+            0% { background-size: 20px 20px; }
+            50% { background-size: 40px 40px; }
+            100% { background-size: 20px 20px; }
+        }
+
+        #game-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+
+        canvas {
+            margin: 20px auto;
+            display: block;
+            background: #f4f4f4;
+            border: 1px solid #ccc;
+        }
+
+        #letter-buttons button {
+            margin: 5px;
+            padding: 10px 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        #letter-buttons button:hover {
+            background: #0056b3;
+        }
+
+        #restart-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #restart-button:hover {
+            background: #218838;
+        }
+
+        #background-smiley {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 200px;
+            opacity: 0;
+            z-index: 1;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .happy {
+            color: #ffeb3b;
+        }
+
+        .sad {
+            color: #2196f3;
+        }
+    </style>
 </head>
 <body>
+    <div id="background-smiley"></div>
+    <div id="game-container">
+        <h1>Galgenmännchen</h1>
+        <canvas id="hangman-canvas" width="300" height="400"></canvas>
+        <p id="word-display">_ _ _ _ _</p>
+        <div id="letter-buttons"></div>
+        <p id="message"></p>
+        <button id="restart-button" style="display: none;">Neustart</button>
+    </div>
+    <script>
+        const words = [ 
+        // Tiere
+         "ELEFANT", "KATZE", "HUND", "PFERD", "SCHILDKRÖTE", "LÖWE", "TIGER", "PANDA", "KÄNGURU", "DELFIN",
+        "GIRAFFE", "NASHORN", "ZEBRA", "AFFE", "FUCHS", "WOLF", "BÄR", "EULE", "SCHWAN", "PAPAGEI",
+        "KROKODIL", "SCHWEIN", "KUH", "SCHAF", "ZIEGE", "HASE", "MAUS", "RATTE", "FISCH", "WAL",
+        // Dinge
+        "COMPUTER", "HANDY", "TISCH", "STUHL", "LAMPE", "FENSTER", "TÜR", "AUTO", "FLUGZEUG", "SCHLÜSSEL",
+        "FERNSEHER", "KAMERA", "RADIO", "UHR", "SPIEGEL", "BETT", "SOFA", "SCHRANK", "BUCH", "ZEITSCHRIFT",
+        "STIFT", "PAPIER", "TASCHE", "KOPFHÖRER", "LADEGERÄT", "KÜHLSCHRANK", "HERD", "BACKOFEN", "VENTILATOR", "DRUCKER",
+        // Berufe
+        "PROGRAMMIERER", "LEHRER", "ARZT", "MECHANIKER", "ARCHITEKT", "PILOT", "BAUER", "FRISEUR", "JOURNALIST", "KOCH",
+        "POLIZIST", "FEUERWEHRMANN", "ANWALT", "RICHTER", "KRANKENSCHWESTER", "ZAHNARZT", "MALER", "MUSIKER", "SÄNGER", "TÄNZER",
+        "SCHREINER", "ELEKTRIKER", "INSTALLATEUR", "INGENIEUR", "WISSENSCHAFTLER", "FORSCHER", "SOFTWAREENTWICKLER", "DESIGNER", "FOTOGRAF", "VERKÄUFER",
+        // Tätigkeiten
+        "SCHREIBEN", "LESEN", "MALEN", "KOCHEN", "FAHREN", "SPRINGEN", "TAUCHEN", "LERNEN", "SINGEN", "TANZEN",
+        "LAUFEN", "SCHWIMMEN", "RADFAHREN", "KLETTERN", "SPIELEN", "ARBEITEN", "SCHLAFEN", "ESSEN", "TRINKEN", "ZEICHNEN",
+        "BASTELN", "BAUEN", "PROGRAMMIEREN", "REISEN", "FOTOGRAFIEREN", "FILMEN", "PUTZEN", "GÄRTNERN", "ANGELN", "JAGEN",
+        // Fächer
+        "MATHEMATIK", "BIOLOGIE", "CHEMIE", "PHYSIK", "GESCHICHTE", "ERDKUNDE", "SPORT", "MUSIK", "KUNST", "INFORMATIK",
+        "DEUTSCH", "ENGLISCH", "FRANZÖSISCH", "SPANISCH", "ITALIENISCH", "LATEIN", "PHILOSOPHIE", "SOZIALKUNDE", "POLITIK", "RELIGION",
+        "ETHIK", "ASTRONOMIE", "PSYCHOLOGIE", "WIRTSCHAFT", "TECHNIK", "MECHANIK", "ELEKTROTECHNIK", "MEDIZIN", "ÖKOLOGIE", "ARCHITEKTUR"
+    ];
+    
+        let selectedWord = words[Math.floor(Math.random() * words.length)];
+        let guessedLetters = [];
+        let wrongGuesses = 0;
 
-<h1 style="color: rgb(98, 49, 179);">5 typical Questions:</h1>
-<b style="colour:white;">1. How are you?</b>
-<p style="colour:white;">2. How old are you?</p>
-<p style="colour:white;">3. What's your hight?</p>
-<p style="colour:white;">4. Where are you from?</p>
-<p style="colour:white;">5. What are you doing today?</p>
+        const canvas = document.getElementById("hangman-canvas");
+        const ctx = canvas.getContext("2d");
+        const wordDisplay = document.getElementById("word-display");
+        const letterButtons = document.getElementById("letter-buttons");
+        const message = document.getElementById("message");
+        const restartButton = document.getElementById("restart-button");
+        const backgroundSmiley = document.getElementById("background-smiley");
 
-<h2 style="colour:rgb(85, 18, 18);">My personal answers:</h2>
-<p style="color:blue;">1. I feel good!</p>
-<p style="color:red;">2. nearly 17!</p>
-<p style="color:cyan;">3. I have a hight of <mark>169cm</mark> in DE!</p>
-<p style="color:green;">4. I am from Germany!</p>
-<p style="color:purple;">5. I am going to continue my painting of the BMW M4 competition!</p>
-<style>
-       h3 {
-        font-size: 3em;
-        background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
-        background-clip: text;
-        -webkit-background-clip: text;
-        color: transparent;
-        animation: text-rainbow 3s infinite;
-    }
-    </style>
-<h3> Congratiolations <br> You finished the Questioning!</h3>
+        function drawHangman() {
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "#333";
+            if (wrongGuesses === 1) ctx.strokeRect(50, 350, 200, 10);
+            if (wrongGuesses === 2) ctx.strokeRect(100, 50, 10, 300);
+            if (wrongGuesses === 3) ctx.strokeRect(100, 50, 100, 10);
+            if (wrongGuesses === 4) ctx.strokeRect(190, 50, 10, 50);
+            if (wrongGuesses === 5) ctx.beginPath(), ctx.arc(195, 120, 20, 0, Math.PI * 2), ctx.stroke();
+            if (wrongGuesses === 6) ctx.moveTo(195, 140), ctx.lineTo(195, 220), ctx.stroke();
+            if (wrongGuesses === 7) ctx.moveTo(195, 160), ctx.lineTo(170, 200), ctx.stroke();
+            if (wrongGuesses === 8) ctx.moveTo(195, 160), ctx.lineTo(220, 200), ctx.stroke();
+            if (wrongGuesses === 9) ctx.moveTo(195, 220), ctx.lineTo(170, 270), ctx.stroke();
+            if (wrongGuesses === 10) ctx.moveTo(195, 220), ctx.lineTo(220, 270), ctx.stroke();
+        }
+
+        function updateWordDisplay() {
+            const display = selectedWord.split("").map(letter => guessedLetters.includes(letter) ? letter : "_").join(" ");
+            wordDisplay.textContent = display;
+            if (!display.includes("_")) {
+                message.textContent = "Glückwunsch! Du hast gewonnen!";
+                letterButtons.innerHTML = "";
+                restartButton.style.display = "block";
+                showSmiley("happy");
+            }
+        }
+
+        function handleGuess(letter) {
+            if (guessedLetters.includes(letter) || wrongGuesses >= 10) return;
+            guessedLetters.push(letter);
+            if (selectedWord.includes(letter)) {
+                updateWordDisplay();
+            } else {
+                wrongGuesses++;
+                drawHangman();
+                if (wrongGuesses >= 10) {
+                    message.textContent = `Verloren! Das Wort war: ${selectedWord}`;
+                    letterButtons.innerHTML = "";
+                    restartButton.style.display = "block";
+                    showSmiley("sad");
+                }
+            }
+        }
+
+        function showSmiley(type) {
+            backgroundSmiley.textContent = type === "happy" ? "😊" : "😢";
+            backgroundSmiley.className = type;
+            backgroundSmiley.style.opacity = 1;
+        }
+
+        function setupGame() {
+            guessedLetters = [];
+            wrongGuesses = 0;
+            selectedWord = words[Math.floor(Math.random() * words.length)];
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            updateWordDisplay();
+            message.textContent = "";
+            restartButton.style.display = "none";
+            backgroundSmiley.style.opacity = 0;
+            letterButtons.innerHTML = "";
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÜ".split("").forEach(letter => {
+                const button = document.createElement("button");
+                button.textContent = letter;
+                button.onclick = () => handleGuess(letter);
+                letterButtons.appendChild(button);
+            });
+        }
+
+        restartButton.onclick = setupGame;
+        setupGame();
+    </script>
 </body>
 </html>
