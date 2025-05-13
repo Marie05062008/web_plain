@@ -177,15 +177,15 @@
             }
         }
 
-    function showSmiley(type) {
-        backgroundSmiley.textContent = type === "happy" ? "😊" : "😢";
-        backgroundSmiley.className = type;
-        backgroundSmiley.style.opacity = 1;
+        function showSmiley(type) {
+            backgroundSmiley.textContent = type === "happy" ? "😊" : "😢";
+            backgroundSmiley.className = type;
+            backgroundSmiley.style.opacity = 1;
 
-        // Smiley nach 2 Sekunden ausblenden
-        setTimeout(() => {
-            backgroundSmiley.style.opacity = 0;
-        }, 2000);
+            // Smiley nach 2 Sekunden ausblenden
+            setTimeout(() => {
+                backgroundSmiley.style.opacity = 0;
+            }, 2000);
         }
 
         function setupGame() {
