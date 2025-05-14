@@ -1,3 +1,4 @@
+// Memory-Spiel mit verschiedenen Themen
 const themeSelectionContainer = document.getElementById('theme-selection');
 const gameBoardContainer = document.getElementById('game-board-container');
 const gameBoard = document.querySelector('.game-board');
