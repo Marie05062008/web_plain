@@ -36,9 +36,23 @@ body {
     bottom: 50px;
     left: 50px;
     width: 50px;
-    height: 50px;
-    background-color: red;
+    height: 80px;
+    background-color: #ffcc00; /* Gelber Körper */
     border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    overflow: hidden;
+}
+
+#player::before {
+    content: '';
+    position: absolute;
+    bottom: 70px;
+    width: 30px;
+    height: 30px;
+    background-color: #ff9966; /* Gesicht */
+    border-radius: 50%;
 }
 
 #obstacle {
@@ -50,6 +64,17 @@ body {
     background-color: black;
     border-radius: 5px;
     animation: moveObstacle 2s linear infinite;
+}
+
+#low-obstacle {
+    position: absolute;
+    bottom: 100px;
+    right: 0;
+    width: 50px;
+    height: 30px;
+    background-color: darkred;
+    border-radius: 5px;
+    animation: moveObstacle 3s linear infinite;
 }
 
 @keyframes moveObstacle {
@@ -67,4 +92,55 @@ body {
     right: 10px;
     font-size: 1.5em;
     color: white;
+}
+
+#lives {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 1.5em;
+    color: red;
+}
+
+.heart {
+    margin-right: 5px;
+}
+
+#game-over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+#game-over h1 {
+    margin-bottom: 20px;
+}
+
+#reset-button, .menu-button {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 1em;
+    color: white;
+    background: #007bff;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#reset-button:hover, .menu-button:hover {
+    background: #0056b3;
+}
+
+.ducking {
+    height: 40px !important; /* Spieler duckt sich */
 }
