@@ -1,8 +1,11 @@
+const deviceSelectionContainer = document.getElementById('device-selection');
 const themeSelectionContainer = document.getElementById('theme-selection');
 const gameBoardContainer = document.getElementById('game-board-container');
 const gameBoard = document.querySelector('.game-board');
+const deviceButtons = document.querySelectorAll('.device-button');
 const themeButtons = document.querySelectorAll('.theme-button');
 
+let currentDevice = null; // Aktuelles Gerät (pc oder mobile)
 let currentTheme = null; // Aktuelles Thema
 let firstCard = null; // Erste umgedrehte Karte
 let secondCard = null; // Zweite umgedrehte Karte
@@ -51,6 +54,21 @@ const themes = {
         'images/Tätigkeiten/Tauchen.jpg', // Tauchen
     ],
 };
+
+// Gerät auswählen
+deviceButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        currentDevice = button.dataset.device; // Hole das Gerät aus dem data-device-Attribut
+
+        // Füge die entsprechende Klasse zum Body hinzu
+        document.body.classList.remove('pc', 'mobile');
+        document.body.classList.add(currentDevice);
+
+        // Zeige die Themen-Auswahl an
+        deviceSelectionContainer.style.display = 'none';
+        themeSelectionContainer.style.display = 'block';
+    });
+});
 
 // Karten mischen
 function shuffle(array) {

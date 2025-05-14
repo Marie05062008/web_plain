@@ -38,6 +38,50 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
+/* Geräte-Auswahl-Buttons */
+.device-button {
+    display: inline-block;
+    margin: 10px;
+    padding: 15px 25px;
+    font-size: 1.2em;
+    color: white;
+    background: #007bff;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.device-button:hover {
+    background: #0056b3;
+    transform: scale(1.05);
+}
+
+.device-button:active {
+    background: #003f7f;
+    transform: scale(0.95);
+}
+
+/* Standard-Karten */
+.card {
+    width: 120px;
+    height: 120px;
+}
+
+/* Karten für Handy */
+.mobile .card {
+    width: 80px;
+    height: 80px;
+}
+
+/* Karten für PC */
+.pc .card {
+    width: 150px;
+    height: 150px;
+}
+
+
 .theme-selection {
     margin: 20px 0;
 }
