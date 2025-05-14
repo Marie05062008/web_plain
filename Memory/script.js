@@ -4,20 +4,20 @@ const themeButtons = document.querySelectorAll('.theme-selection button');
 // Themen mit lokalen Bildern
 const themes = {
     automarken: [
-        'images/BMW_M4.jpg', // BMW
-        'images/Audi_R8.jpg', // Audi
-        'images/Mercedes.jpg', // Mercedes
-        'images/Ford_Mustang_GT.jpg', // Ford
-        'images/Toyota_Mk4.jpg', // Toyota
-        'images/Ford.jpg', // Ford
+        'images/Autos/BMW_M4.jpg', // BMW
+        'images/Autos/Audi_R8.jpg', // Audi
+        'images/Autos/Mercedes.jpg', // Mercedes
+        'images/Autos/Ford_Mustang_GT.jpg', // Ford
+        'images/Autos/Toyota_Mk4.jpg', // Toyota
+        'images/Autos/Ford.jpg', // Ford
     ],
     tiere: [
-        'images/fieseKatzeiiih.jpg', // Katze
-        'images/Roter_Panda.jpg', // Roter Panda
-        'images/Tiger.jpg', // Tiger
-        'images/Eule.jpg', // Eule
-        'images/Otter.jpg', // Otter
-        'images/Hund.jpg', // Hund
+        'images/Tiere/fieseKatzeiiih.jpg', // Katze
+        'images/Tiere/Roter_Panda.jpg', // Roter Panda
+        'images/Tiere/Tiger.jpg', // Tiger
+        'images/Tiere/Eule.jpg', // Eule
+        'images/Tiere/Otter.jpg', // Otter
+        'images/Tiere/Hund.jpg', // Hund
     ],
     früchte: [
         'images/Obst/Apfel.jpg', // Apfel
