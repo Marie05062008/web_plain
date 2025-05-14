@@ -1,47 +1,47 @@
 const gameBoard = document.querySelector('.game-board');
 const themeButtons = document.querySelectorAll('.theme-selection button');
 
-// Themen mit KI-generierten Bildern
+// Themen mit lokalen Bildern
 const themes = {
     automarken: [
-        'https://upload.wikimedia.org/wikipedia/commons/4/44/BMW.svg', // BMW
-        'https://upload.wikimedia.org/wikipedia/commons/6/6f/Audi_logo.svg', // Audi
-        'https://upload.wikimedia.org/wikipedia/commons/9/90/Mercedes-Logo.svg', // Mercedes
-        'https://upload.wikimedia.org/wikipedia/commons/6/6b/Mazda_logo_with_emblem.svg', // Mazda
-        'https://upload.wikimedia.org/wikipedia/commons/9/9d/Toyota_logo.png', // Toyota
-        'https://upload.wikimedia.org/wikipedia/commons/3/3e/Ford_logo_flat.svg', // Ford
+        'images/automarken/bmw.png',
+        'images/automarken/audi.png',
+        'images/automarken/mercedes.png',
+        'images/automarken/tesla.png',
+        'images/automarken/toyota.png',
+        'images/automarken/ford.png',
     ],
     tiere: [
-        'https://upload.wikimedia.org/wikipedia/commons/6/6e/Golde33443.jpg', // Hund
-        'https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg', // Katze
-        'https://upload.wikimedia.org/wikipedia/commons/3/3e/Asian_Elephant.jpg', // Elefant
-        'https://upload.wikimedia.org/wikipedia/commons/f/fd/Bengal_Tiger.jpg', // Tiger
-        'https://upload.wikimedia.org/wikipedia/commons/8/8c/Fox.jpg', // Fuchs
-        'https://upload.wikimedia.org/wikipedia/commons/4/45/Owl.jpg', // Eule
+        'images/fieseKatzeiiih.jpg', // Katze
+        'images/Roter_Panda.jpg', // Roter Panda
+        'images/Tiger.jpg', // Tiger
+        'images/Eule.jpg', // Eule
+        'images/Otter.jpg', // Otter
+        'images/Hund.jpg', // Hund
     ],
     früchte: [
-        'https://upload.wikimedia.org/wikipedia/commons/1/15/Red_Apple.jpg', // Apfel
-        'https://upload.wikimedia.org/wikipedia/commons/4/44/Banana.jpg', // Banane
-        'https://upload.wikimedia.org/wikipedia/commons/3/36/Kyoho-grape.jpg', // Traube
-        'https://upload.wikimedia.org/wikipedia/commons/2/29/PerfectStrawberry.jpg', // Erdbeere
-        'https://upload.wikimedia.org/wikipedia/commons/c/cb/Pineapple_and_cross_section.jpg', // Ananas
-        'https://upload.wikimedia.org/wikipedia/commons/d/d3/Kiwi_aka.jpg', // Kiwi
+        'images/früchte/apfel.png',
+        'images/früchte/banane.png',
+        'images/früchte/traube.png',
+        'images/früchte/erdbeere.png',
+        'images/früchte/ananas.png',
+        'images/früchte/kiwi.png',
     ],
     motorräder: [
-        'https://upload.wikimedia.org/wikipedia/commons/4/4d/Harley-Davidson_logo.svg', // Harley Davidson
-        'https://upload.wikimedia.org/wikipedia/commons/3/3e/Ducati_logo.svg', // Ducati
-        'https://upload.wikimedia.org/wikipedia/commons/2/2d/Kawasaki_logo.svg', // Kawasaki
-        'https://upload.wikimedia.org/wikipedia/commons/9/9e/Yamaha_logo.svg', // Yamaha
-        'https://upload.wikimedia.org/wikipedia/commons/2/2e/Honda-logo.svg', // Honda
-        'https://upload.wikimedia.org/wikipedia/commons/9/9e/Suzuki_logo.svg', // Suzuki
+        '2022-05 BMW M Motorrad S1000RR.jpg', //BMW
+        'images/motorräder/ducati.png',
+        'images/motorräder/kawasaki.png',
+        'images/motorräder/yamaha.png',
+        'images/motorräder/honda.png',
+        'images/motorräder/suzuki.png',
     ],
     tätigkeiten: [
-        'https://upload.wikimedia.org/wikipedia/commons/6/6b/Reading_a_book.jpg', // Lesen
-        'https://upload.wikimedia.org/wikipedia/commons/3/3e/Writing_with_pen.jpg', // Schreiben
-        'https://upload.wikimedia.org/wikipedia/commons/1/1e/Cooking.jpg', // Kochen
-        'https://upload.wikimedia.org/wikipedia/commons/3/3b/Driving_a_car.jpg', // Fahren
-        'https://upload.wikimedia.org/wikipedia/commons/5/5e/Jumping.jpg', // Springen
-        'https://upload.wikimedia.org/wikipedia/commons/8/8e/Scuba_diving.jpg', // Tauchen
+        'images/tätigkeiten/lesen.png',
+        'images/tätigkeiten/schreiben.png',
+        'images/tätigkeiten/kochen.png',
+        'images/tätigkeiten/fahren.png',
+        'images/tätigkeiten/springen.png',
+        'images/tätigkeiten/tauchen.png',
     ],
 };
 
@@ -63,21 +63,7 @@ function startGame(theme) {
         const card = document.createElement('div');
         card.classList.add('card');
         card.dataset.src = src;
-
-        // Erstelle das <picture>-Element
-        const picture = document.createElement('picture');
-
-        // Füge das <img>-Element als Fallback hinzu
-        const img = document.createElement('img');
-        img.src = src; // Standardbild
-        img.alt = 'Memory Card';
-        img.style.visibility = 'hidden'; // Standardmäßig verstecken
-        picture.appendChild(img);
-
-        // Füge das <picture>-Element zur Karte hinzu
-        card.appendChild(picture);
-
-        // Füge die Karte zum Spielbrett hinzu
+        card.innerHTML = `<img src="${src}" alt="Memory Card" style="visibility: hidden;">`;
         gameBoard.appendChild(card);
     });
 }
