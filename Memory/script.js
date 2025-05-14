@@ -4,44 +4,45 @@ const themeButtons = document.querySelectorAll('.theme-selection button');
 // Themen mit KI-generierten Bildern
 const themes = {
     automarken: [
-        'https://www.bing.com/images/search?view=detailV2&ccid=%2bHNTvpGg&id=23950D114E6446EA1C755E3E16835ADAD115B4C0&thid=OIP.-HNTvpGg3LGiHJLcSY4YVgHaGB&mediaurl=https%3a%2f%2fstatic.vecteezy.com%2fsystem%2fresources%2fpreviews%2f020%2f502%2f870%2foriginal%2fbmw-brand-logo-car-symbol-blue-and-white-design-germany-automobile-illustration-with-black-background-free-vector.jpg&cdnurl=https%3a%2f%2fth.bing.com%2fth%2fid%2fR.f87353be91a0dcb1a21c92dc498e1856%3frik%3dwLQV0dpagxY%252bXg%26pid%3dImgRaw%26r%3d0&exph=1561&expw=1920&q=BMW+Marke&simid=608030120214295413&FORM=IRPRST&ck=C7828A303993B9C841EAEC1E458CF4CE&selectedIndex=0&itb=0',
-        'https://via.placeholder.com/100?text=Audi',
-        'https://via.placeholder.com/100?text=Mercedes',
-        'https://via.placeholder.com/100?text=Tesla',
-        'https://via.placeholder.com/100?text=Toyota',
-        'https://via.placeholder.com/100?text=Ford',
+        'https://de.wikipedia.org/wiki/Datei:BMW.svg', // BMW
+        'https://upload.wikimedia.org/wikipedia/commons/4/4c/Mercedes-Benz_Logo.svg', // Mercedes
+        'https://upload.wikimedia.org/wikipedia/commons/6/6f/Audi_logo.svg', // Audi
+        'https://de.wikipedia.org/wiki/Datei:Mercedes-Stern_1992.JPG', // Mercedes Stern
+        'https://de.wikipedia.org/wiki/Datei:Mazda_2024.svg', // Mazda
+        'https://de.wikipedia.org/wiki/Datei:Toyota.svg', // Toyota
+        'https://de.wikipedia.org/wiki/Datei:Ford_logo_flat.svg', // Ford
     ],
     tiere: [
-        'https://via.placeholder.com/100?text=Hund',
-        'https://via.placeholder.com/100?text=Katze',
-        'https://via.placeholder.com/100?text=Elefant',
-        'https://via.placeholder.com/100?text=Tiger',
-        'https://via.placeholder.com/100?text=Fuchs',
-        'https://via.placeholder.com/100?text=Eule',
+        'https://upload.wikimedia.org/wikipedia/commons/6/6e/Golde33443.jpg', // Hund
+        'https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg', // Katze
+        'https://upload.wikimedia.org/wikipedia/commons/3/3e/Elephant.jpg', // Elefant
+        'https://upload.wikimedia.org/wikipedia/commons/5/5e/Tiger.jpg', // Tiger
+        'https://upload.wikimedia.org/wikipedia/commons/8/8c/Fox.jpg', // Fuchs
+        'https://upload.wikimedia.org/wikipedia/commons/4/45/Owl.jpg', // Eule
     ],
     früchte: [
-        'https://via.placeholder.com/100?text=Apfel',
-        'https://via.placeholder.com/100?text=Banane',
-        'https://via.placeholder.com/100?text=Traube',
-        'https://via.placeholder.com/100?text=Erdbeere',
-        'https://via.placeholder.com/100?text=Ananas',
-        'https://via.placeholder.com/100?text=Kiwi',
+        'https://de.wikipedia.org/wiki/Fresco_(Apfel)', // Apfel
+        'https://de.wikipedia.org/wiki/Cavendish_(Banane)', // Banane
+        'https://de.wikipedia.org/wiki/Weintraube', // Traube
+        'https://de.wikipedia.org/wiki/Datei:Erdbeere.jpg', // Erdbeere
+        'https://de.wikipedia.org/wiki/Datei:210704_ananas-comosus-dreiergruppe-marktware_1-640x480.jpg', // Ananas
+        'https://de.wikipedia.org/wiki/Kiwifrucht', // Kiwi
     ],
     motorräder: [
-        'https://via.placeholder.com/100?text=Harley',
-        'https://via.placeholder.com/100?text=Ducati',
-        'https://via.placeholder.com/100?text=Kawasaki',
-        'https://via.placeholder.com/100?text=Yamaha',
-        'https://via.placeholder.com/100?text=Honda',
-        'https://via.placeholder.com/100?text=Suzuki',
+        'https://de.wikipedia.org/wiki/Datei:2003_HD_XL1200C_Anniversary_Edition.jpg', // Harley Davidson
+        'https://de.wikipedia.org/wiki/Datei:Ducati_Supersport_950_S.jpg', // Ducati
+        'https://de.wikipedia.org/wiki/Datei:2007KawasakiNinjaZX6R-001.jpg', // Kawasaki
+        'https://de.wikipedia.org/wiki/Yamaha_YZF-R_1', // Yamaha
+        'https://de.wikipedia.org/wiki/Datei:Honda_CRF450R.jpg', // Honda
+        'https://de.wikipedia.org/wiki/Suzuki_GSX-8R', // Suzuki
     ],
     tätigkeiten: [
-        'https://via.placeholder.com/100?text=Lesen',
-        'https://via.placeholder.com/100?text=Schreiben',
-        'https://via.placeholder.com/100?text=Kochen',
-        'https://via.placeholder.com/100?text=Fahren',
-        'https://via.placeholder.com/100?text=Springen',
-        'https://via.placeholder.com/100?text=Tauchen',
+        'https://de.wikipedia.org/wiki/Datei:Dokumente_in_S%C3%BCtterlinschrift_lesen_und_%C3%BCbersetzen_02.jpg', // Lesen
+        'https://de.wikipedia.org/wiki/Manuelles_Schreiben', // Schreiben
+        'https://de.wikipedia.org/wiki/Koch', // Kochen
+        'https://de.wikipedia.org/wiki/Mick_Doohan', // Fahren
+        'https://de.wikipedia.org/wiki/Springen', // Springen
+        'https://de.wikipedia.org/wiki/Tauchen', // Tauchen
     ],
 };
 
