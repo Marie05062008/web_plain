@@ -4,12 +4,12 @@ const themeButtons = document.querySelectorAll('.theme-selection button');
 // Themen mit lokalen Bildern
 const themes = {
     automarken: [
-        'images/automarken/bmw.png',
-        'images/automarken/audi.png',
-        'images/automarken/mercedes.png',
-        'images/automarken/tesla.png',
-        'images/automarken/toyota.png',
-        'images/automarken/ford.png',
+        'images/BMW_M4.jpg', // BMW
+        'images/Audi_R8.jpg', // Audi
+        'images/Mercedes.jpg', // Mercedes
+        'images/Ford_Mustang_GT.jpg', // Ford
+        'images/Toyota_Mk4.jpg', // Toyota
+        'images/Ford.jpg', // Ford
     ],
     tiere: [
         'images/fieseKatzeiiih.jpg', // Katze
@@ -20,28 +20,28 @@ const themes = {
         'images/Hund.jpg', // Hund
     ],
     früchte: [
-        'images/früchte/apfel.png',
-        'images/früchte/banane.png',
-        'images/früchte/traube.png',
-        'images/früchte/erdbeere.png',
-        'images/früchte/ananas.png',
-        'images/früchte/kiwi.png',
+        'images/Obst/Apfel.jpg', // Apfel
+        'images/Obst/Orange.jpg', // Orange
+        'images/Obst/Traube.jpg', // Traube
+        'images/Obst/Erdbeere.jpg', // Erdbeere
+        'images/Obst/Ananas.jpg', // Ananas
+        'images/Obst/Kirsche.jpg', // Kirsche
     ],
     motorräder: [
-        '2022-05 BMW M Motorrad S1000RR.jpg', //BMW
-        'images/motorräder/ducati.png',
-        'images/motorräder/kawasaki.png',
-        'images/motorräder/yamaha.png',
-        'images/motorräder/honda.png',
-        'images/motorräder/suzuki.png',
+        'images/Motorräder/BMW S1000rr.jpg', //BMW
+        'images/Motorräder/Ducati_Panigale_V4.jpg', //Ducati
+        'images/Motorräder/Kawasaki_Ninja.jpg', //Kawasaki
+        'images/Motorräder/Yamaha_R1M.jpg', //Yamaha
+        'images/Motorräder/Honda.jpg', //Honda
+        'images/Motorräder/Suzuki.jpg', //Suzuki
     ],
     tätigkeiten: [
-        'images/tätigkeiten/lesen.png',
-        'images/tätigkeiten/schreiben.png',
-        'images/tätigkeiten/kochen.png',
-        'images/tätigkeiten/fahren.png',
-        'images/tätigkeiten/springen.png',
-        'images/tätigkeiten/tauchen.png',
+        'images/Tätigkeiten/lesen.jpg',
+        'images/Tätigkeiten/schreiben.jpg',
+        'images/Tätigkeiten/Kochen.jpg',
+        'images/Tätigkeiten/fahren.jpg',
+        'images/Tätigkeiten/springen.jpg',
+        'images/Tätigkeiten/Tauchen.jpg',
     ],
 };
 
