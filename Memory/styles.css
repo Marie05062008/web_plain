@@ -94,3 +94,48 @@ body {
     background: #28a745; /* Grün für richtig */
     cursor: default;
 }
+
+/* Karten-Container */
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Karten in einem flexiblen Raster */
+    gap: 10px; /* Abstand zwischen den Karten */
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Karten */
+.card {
+    width: 100px; /* Feste Breite */
+    height: 100px; /* Feste Höhe */
+    background-color: #f0f0f0; /* Hintergrundfarbe der Karte */
+    border: 1px solid #ccc; /* Rahmen der Karte */
+    border-radius: 5px; /* Abgerundete Ecken */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Schatten für die Karte */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden; /* Verhindert, dass Bilder über die Karte hinausragen */
+}
+
+/* Bilder in den Karten */
+.card img {
+    width: 100%; /* Bild passt sich der Breite der Karte an */
+    height: 100%; /* Bild passt sich der Höhe der Karte an */
+    object-fit: cover; /* Bild wird skaliert, um die Karte auszufüllen */
+    visibility: hidden; /* Standardmäßig versteckt */
+}
+
+/* Umgedrehte Karten */
+.card.flipped img {
+    visibility: visible; /* Bild wird sichtbar, wenn die Karte umgedreht ist */
+}
+
+/* Übereinstimmende Karten */
+.card.matched {
+    background-color: #d4edda; /* Grüne Hintergrundfarbe für übereinstimmende Karten */
+    border-color: #c3e6cb; /* Grüner Rahmen für übereinstimmende Karten */
+}
