@@ -1,8 +1,11 @@
+const gameModeContainer = document.getElementById('game-mode');
+const themeSelectionContainer = document.getElementById('theme-selection');
+const gameBoardContainer = document.getElementById('game-board-container');
 const gameBoard = document.querySelector('.game-board');
-const themeButtons = document.querySelectorAll('.theme-selection button');
 const playAloneButton = document.getElementById('play-alone');
 const playAgainstBotButton = document.getElementById('play-against-bot');
-const restartButton = document.getElementById('restart-game'); // Restart-Button
+const restartButton = document.getElementById('restart-game');
+const themeButtons = document.querySelectorAll('.theme-button');
 
 let isPlayingAgainstBot = false; // Standardmäßig alleine spielen
 let currentTheme = null; // Aktuelles Thema
@@ -83,6 +86,10 @@ function startGame(theme) {
         card.appendChild(img);
         gameBoard.appendChild(card);
     });
+
+    gameModeContainer.style.display = 'none';
+    themeSelectionContainer.style.display = 'none';
+    gameBoardContainer.style.display = 'block';
 
     if (isPlayingAgainstBot) {
         setTimeout(botTurn, 2000); // Bot beginnt nach 2 Sekunden
@@ -168,12 +175,14 @@ function botTurn() {
 // Spielmodus auswählen
 playAloneButton.addEventListener('click', () => {
     isPlayingAgainstBot = false;
-    alert('Du spielst alleine!');
+    gameModeContainer.style.display = 'none';
+    themeSelectionContainer.style.display = 'block';
 });
 
 playAgainstBotButton.addEventListener('click', () => {
     isPlayingAgainstBot = true;
-    alert('Du spielst gegen den Bot!');
+    gameModeContainer.style.display = 'none';
+    themeSelectionContainer.style.display = 'block';
 });
 
 // Neustart-Button

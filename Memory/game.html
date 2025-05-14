@@ -16,21 +16,18 @@
         <button id="play-against-bot">Gegen den Bot spielen</button>
     </div>
 
-    <div id="memory-game">
-        <h1>Memory-Spiel</h1>
-        <p>Wähle ein Thema aus, um das Spiel zu starten:</p>
-        <div class="theme-selection">
-            <button data-theme="automarken">Automarken</button>
-            <button data-theme="tiere">Tiere</button>
-            <button data-theme="früchte">Früchte</button>
-            <button data-theme="motorräder">Motorräder</button>
-            <button data-theme="tätigkeiten">Tätigkeiten</button>
-        </div>
-        <div class="game-board"></div>
+    <div id="theme-selection" style="display: none;">
+        <h2>Wähle ein Thema:</h2>
+        <button class="theme-button" data-theme="automarken">Automarken</button>
+        <button class="theme-button" data-theme="tiere">Tiere</button>
+        <button class="theme-button" data-theme="früchte">Früchte</button>
+        <button class="theme-button" data-theme="motorräder">Motorräder</button>
+        <button class="theme-button" data-theme="tätigkeiten">Tätigkeiten</button>
     </div>
 
-    <div id="controls">
+    <div id="game-board-container" style="display: none;">
         <button id="restart-game">Neustart</button>
+        <div class="game-board"></div>
     </div>
 
     <script src="script.js" defer></script>
