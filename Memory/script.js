@@ -14,14 +14,14 @@ const themes = {
     tiere: [
         'https://upload.wikimedia.org/wikipedia/commons/6/6e/Golde33443.jpg', // Hund
         'https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg', // Katze
-        'https://upload.wikimedia.org/wikipedia/commons/3/3e/Elephant.jpg', // Elefant
-        'https://upload.wikimedia.org/wikipedia/commons/5/5e/Tiger.jpg', // Tiger
+        'https://upload.wikimedia.org/wikipedia/commons/3/3e/Asian_Elephant.jpg', // Elefant
+        'https://upload.wikimedia.org/wikipedia/commons/f/fd/Bengal_Tiger.jpg', // Tiger
         'https://upload.wikimedia.org/wikipedia/commons/8/8c/Fox.jpg', // Fuchs
         'https://upload.wikimedia.org/wikipedia/commons/4/45/Owl.jpg', // Eule
     ],
     früchte: [
         'https://upload.wikimedia.org/wikipedia/commons/1/15/Red_Apple.jpg', // Apfel
-        'https://upload.wikimedia.org/wikipedia/commons/4/44/Bananas.jpg', // Banane
+        'https://upload.wikimedia.org/wikipedia/commons/4/44/Banana.jpg', // Banane
         'https://upload.wikimedia.org/wikipedia/commons/3/36/Kyoho-grape.jpg', // Traube
         'https://upload.wikimedia.org/wikipedia/commons/2/29/PerfectStrawberry.jpg', // Erdbeere
         'https://upload.wikimedia.org/wikipedia/commons/c/cb/Pineapple_and_cross_section.jpg', // Ananas
@@ -63,7 +63,21 @@ function startGame(theme) {
         const card = document.createElement('div');
         card.classList.add('card');
         card.dataset.src = src;
-        card.innerHTML = `<img src="${src}" alt="Memory Card" style="visibility: hidden;">`;
+
+        // Erstelle das <picture>-Element
+        const picture = document.createElement('picture');
+
+        // Füge das <img>-Element als Fallback hinzu
+        const img = document.createElement('img');
+        img.src = src; // Standardbild
+        img.alt = 'Memory Card';
+        img.style.visibility = 'hidden'; // Standardmäßig verstecken
+        picture.appendChild(img);
+
+        // Füge das <picture>-Element zur Karte hinzu
+        card.appendChild(picture);
+
+        // Füge die Karte zum Spielbrett hinzu
         gameBoard.appendChild(card);
     });
 }
