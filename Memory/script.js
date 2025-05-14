@@ -96,81 +96,17 @@ function startGame(theme) {
     }
 }
 
-// Kartenlogik
-let firstCard = null;
-let secondCard = null;
-let lockBoard = false;
-
-gameBoard.addEventListener('click', event => {
-    if (isPlayingAgainstBot && lockBoard) return; // Spieler kann nicht klicken, wenn der Bot dran ist
-
-    const clickedCard = event.target.closest('.card');
-    if (!clickedCard || clickedCard.classList.contains('flipped') || lockBoard) return;
-
-    clickedCard.classList.add('flipped');
-    clickedCard.querySelector('img').style.visibility = 'visible';
-
-    if (!firstCard) {
-        firstCard = clickedCard;
-    } else {
-        secondCard = clickedCard;
-        lockBoard = true;
-
-        if (firstCard.dataset.src === secondCard.dataset.src) {
-            firstCard.classList.add('matched');
-            secondCard.classList.add('matched');
-            resetTurn();
+// Event-Listener für Themen-Buttons
+themeButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const theme = button.dataset.theme; // Hole das Thema aus dem data-theme-Attribut
+        if (theme) {
+            startGame(theme); // Starte das Spiel mit dem ausgewählten Thema
         } else {
-            setTimeout(() => {
-                firstCard.classList.remove('flipped');
-                secondCard.classList.remove('flipped');
-                firstCard.querySelector('img').style.visibility = 'hidden';
-                secondCard.querySelector('img').style.visibility = 'hidden';
-                resetTurn();
-            }, 1000);
+            alert('Thema nicht gefunden!');
         }
-    }
+    });
 });
-
-function resetTurn() {
-    firstCard = null;
-    secondCard = null;
-    lockBoard = false;
-
-    if (isPlayingAgainstBot) {
-        setTimeout(botTurn, 1000); // Bot ist nach 1 Sekunde dran
-    }
-}
-
-// Bot-Logik
-function botTurn() {
-    const unmatchedCards = Array.from(document.querySelectorAll('.card:not(.matched):not(.flipped)'));
-    if (unmatchedCards.length < 2) return; // Keine Züge mehr möglich
-
-    const firstBotCard = unmatchedCards[Math.floor(Math.random() * unmatchedCards.length)];
-    firstBotCard.classList.add('flipped');
-    firstBotCard.querySelector('img').style.visibility = 'visible';
-
-    setTimeout(() => {
-        const secondBotCard = unmatchedCards.filter(card => card !== firstBotCard)[Math.floor(Math.random() * (unmatchedCards.length - 1))];
-        secondBotCard.classList.add('flipped');
-        secondBotCard.querySelector('img').style.visibility = 'visible';
-
-        if (firstBotCard.dataset.src === secondBotCard.dataset.src) {
-            firstBotCard.classList.add('matched');
-            secondBotCard.classList.add('matched');
-        } else {
-            setTimeout(() => {
-                firstBotCard.classList.remove('flipped');
-                secondBotCard.classList.remove('flipped');
-                firstBotCard.querySelector('img').style.visibility = 'hidden';
-                secondBotCard.querySelector('img').style.visibility = 'hidden';
-            }, 1000);
-        }
-
-        lockBoard = false; // Spieler ist wieder dran
-    }, 1000);
-}
 
 // Spielmodus auswählen
 playAloneButton.addEventListener('click', () => {
