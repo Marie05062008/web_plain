@@ -42,22 +42,30 @@ body {
     margin: 20px 0;
 }
 
-.theme-selection button {
-    margin: 5px;
+/* Themen-Buttons */
+.theme-button {
+    display: inline-block;
+    margin: 10px;
     padding: 10px 20px;
     font-size: 1em;
     color: white;
-    background: #28a745; /* Grün */
+    background: #007bff; /* Blau wie der Zurück-Button */
+    text-decoration: none;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background 0.3s ease;
+    transition: background 0.3s ease, transform 0.2s ease;
 }
 
-.theme-selection button:hover {
-    background: #218838; /* Dunkleres Grün beim Hover */
+.theme-button:hover {
+    background: #0056b3; /* Dunkleres Blau beim Hover */
+    transform: scale(1.05); /* Leichtes Vergrößern beim Hover */
 }
 
+.theme-button:active {
+    background: #003f7f; /* Noch dunkleres Blau beim Klicken */
+    transform: scale(0.95); /* Leichtes Verkleinern beim Klicken */
+}
 .game-board {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -98,17 +106,20 @@ body {
 /* Karten-Container */
 .game-board {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Karten in einem flexiblen Raster */
+    grid-template-columns: repeat(4, 1fr); /* 4 Spalten */
+    grid-template-rows: repeat(3, 1fr); /* 3 Reihen */
     gap: 10px; /* Abstand zwischen den Karten */
-    justify-content: center;
-    align-items: center;
+    justify-content: center; /* Zentriert die Karten horizontal */
+    align-items: center; /* Zentriert die Karten vertikal */
+    width: fit-content; /* Passt die Breite des Containers an den Inhalt an */
+    margin: 0 auto; /* Zentriert den Container auf der Seite */
     padding: 20px;
 }
 
 /* Karten */
 .card {
-    width: 100px; /* Feste Breite */
-    height: 100px; /* Feste Höhe */
+    width: 120px; /* Feste Breite */
+    height: 120px; /* Feste Höhe */
     background-color: #f0f0f0; /* Hintergrundfarbe der Karte */
     border: 1px solid #ccc; /* Rahmen der Karte */
     border-radius: 5px; /* Abgerundete Ecken */
