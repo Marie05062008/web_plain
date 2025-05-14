@@ -2,13 +2,6 @@ const gameModeContainer = document.getElementById('game-mode');
 const themeSelectionContainer = document.getElementById('theme-selection');
 const gameBoardContainer = document.getElementById('game-board-container');
 const gameBoard = document.querySelector('.game-board');
-const playAloneButton = document.getElementById('play-alone');
-const playAgainstBotButton = document.getElementById('play-against-bot');
-const restartButton = document.getElementById('restart-game');
-const themeButtons = document.querySelectorAll('.theme-button');
-
-let isPlayingAgainstBot = false; // Standardmäßig alleine spielen
-let currentTheme = null; // Aktuelles Thema
 
 // Themen mit lokalen Bildern
 const themes = {
@@ -86,46 +79,52 @@ function startGame(theme) {
         card.appendChild(img);
         gameBoard.appendChild(card);
     });
-
-    gameModeContainer.style.display = 'none';
-    themeSelectionContainer.style.display = 'none';
-    gameBoardContainer.style.display = 'block';
-
-    if (isPlayingAgainstBot) {
-        setTimeout(botTurn, 2000); // Bot beginnt nach 2 Sekunden
-    }
 }
 
-// Event-Listener für Themen-Buttons
+// Kartenlogik
+let firstCard = null;
+let secondCard = null;
+let lockBoard = false;
+
+gameBoard.addEventListener('click', event => {
+    const clickedCard = event.target.closest('.card');
+    if (!clickedCard || clickedCard.classList.contains('flipped') || lockBoard) return;
+
+    clickedCard.classList.add('flipped');
+    clickedCard.querySelector('img').style.visibility = 'visible';
+
+    if (!firstCard) {
+        firstCard = clickedCard;
+    } else {
+        secondCard = clickedCard;
+        lockBoard = true;
+
+        if (firstCard.dataset.src === secondCard.dataset.src) {
+            firstCard.classList.add('matched');
+            secondCard.classList.add('matched');
+            resetTurn();
+        } else {
+            setTimeout(() => {
+                firstCard.classList.remove('flipped');
+                secondCard.classList.remove('flipped');
+                firstCard.querySelector('img').style.visibility = 'hidden';
+                secondCard.querySelector('img').style.visibility = 'hidden';
+                resetTurn();
+            }, 1000);
+        }
+    }
+});
+
+function resetTurn() {
+    firstCard = null;
+    secondCard = null;
+    lockBoard = false;
+}
+
+// Thema auswählen
 themeButtons.forEach(button => {
     button.addEventListener('click', () => {
-        const theme = button.dataset.theme; // Hole das Thema aus dem data-theme-Attribut
-        if (theme) {
-            startGame(theme); // Starte das Spiel mit dem ausgewählten Thema
-        } else {
-            alert('Thema nicht gefunden!');
-        }
+        const theme = button.dataset.theme;
+        startGame(theme);
     });
-});
-
-// Spielmodus auswählen
-playAloneButton.addEventListener('click', () => {
-    isPlayingAgainstBot = false;
-    gameModeContainer.style.display = 'none';
-    themeSelectionContainer.style.display = 'block';
-});
-
-playAgainstBotButton.addEventListener('click', () => {
-    isPlayingAgainstBot = true;
-    gameModeContainer.style.display = 'none';
-    themeSelectionContainer.style.display = 'block';
-});
-
-// Neustart-Button
-restartButton.addEventListener('click', () => {
-    if (currentTheme) {
-        startGame(currentTheme); // Starte das Spiel mit dem aktuellen Thema neu
-    } else {
-        alert('Bitte wähle zuerst ein Thema aus!');
-    }
 });
