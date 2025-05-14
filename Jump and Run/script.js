@@ -99,7 +99,21 @@ resetButton.addEventListener('click', () => {
     location.reload(); // Seite neu laden
 });
 
-// Spiel starten
+// Steuerung für Handyspieler
+document.addEventListener('touchstart', (e) => {
+    const touchX = e.touches[0].clientX;
+    const screenWidth = window.innerWidth;
+
+    if (touchX < screenWidth / 2) {
+        // Linke Bildschirmhälfte: Springen
+        jump();
+    } else {
+        // Rechte Bildschirmhälfte: Ducken
+        duck();
+    }
+});
+
+// Steuerung für Tastaturspieler
 document.addEventListener('keydown', (e) => {
     if (e.code === 'Space') {
         jump();
@@ -108,8 +122,17 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+// Hindernisse mit genügend Abstand
+function adjustObstacleSpeed() {
+    obstacle.style.animationDuration = '3s'; // Hindernis bewegt sich langsamer
+    lowObstacle.style.animationDuration = '4s'; // Niedriges Hindernis bewegt sich langsamer
+}
+
 // Kollision und Punktzahl prüfen
 const gameLoop = setInterval(() => {
     checkCollision();
     increaseScore();
 }, 100);
+
+// Hindernisgeschwindigkeit anpassen
+adjustObstacleSpeed();
