@@ -46,8 +46,8 @@ body {
 .theme-button {
     display: inline-block;
     margin: 10px;
-    padding: 10px 20px;
-    font-size: 1em;
+    padding: 15px 25px; /* Größere Polsterung für bessere Lesbarkeit */
+    font-size: 1.2em; /* Größere Schriftgröße */
     color: white;
     background: #007bff; /* Blau wie der Zurück-Button */
     text-decoration: none;
@@ -55,8 +55,12 @@ body {
     border-radius: 5px;
     cursor: pointer;
     transition: background 0.3s ease, transform 0.2s ease;
+    width: 100%; /* Buttons nehmen die gesamte Breite des Containers ein */
+    max-width: 300px; /* Maximale Breite für größere Bildschirme */
+    box-sizing: border-box; /* Padding wird in die Breite einbezogen */
 }
 
+/* Hover- und Active-Zustände */
 .theme-button:hover {
     background: #0056b3; /* Dunkleres Blau beim Hover */
     transform: scale(1.05); /* Leichtes Vergrößern beim Hover */
@@ -65,6 +69,15 @@ body {
 .theme-button:active {
     background: #003f7f; /* Noch dunkleres Blau beim Klicken */
     transform: scale(0.95); /* Leichtes Verkleinern beim Klicken */
+}
+
+/* Media-Query für kleinere Bildschirme */
+@media (max-width: 768px) {
+    .theme-button {
+        font-size: 1em; /* Kleinere Schriftgröße für Handys */
+        padding: 10px 20px; /* Weniger Polsterung */
+        max-width: 90%; /* Buttons nehmen fast die gesamte Breite ein */
+    }
 }
 .game-board {
     display: grid;
