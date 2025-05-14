@@ -4,13 +4,12 @@ const themeButtons = document.querySelectorAll('.theme-selection button');
 // Themen mit KI-generierten Bildern
 const themes = {
     automarken: [
-        'https://de.wikipedia.org/wiki/Datei:BMW.svg', // BMW
-        'https://upload.wikimedia.org/wikipedia/commons/4/4c/Mercedes-Benz_Logo.svg', // Mercedes
+        'https://upload.wikimedia.org/wikipedia/commons/4/44/BMW.svg', // BMW
         'https://upload.wikimedia.org/wikipedia/commons/6/6f/Audi_logo.svg', // Audi
-        'https://de.wikipedia.org/wiki/Datei:Mercedes-Stern_1992.JPG', // Mercedes Stern
-        'https://de.wikipedia.org/wiki/Datei:Mazda_2024.svg', // Mazda
-        'https://de.wikipedia.org/wiki/Datei:Toyota.svg', // Toyota
-        'https://de.wikipedia.org/wiki/Datei:Ford_logo_flat.svg', // Ford
+        'https://upload.wikimedia.org/wikipedia/commons/9/90/Mercedes-Logo.svg', // Mercedes
+        'https://upload.wikimedia.org/wikipedia/commons/6/6b/Mazda_logo_with_emblem.svg', // Mazda
+        'https://upload.wikimedia.org/wikipedia/commons/9/9d/Toyota_logo.png', // Toyota
+        'https://upload.wikimedia.org/wikipedia/commons/3/3e/Ford_logo_flat.svg', // Ford
     ],
     tiere: [
         'https://upload.wikimedia.org/wikipedia/commons/6/6e/Golde33443.jpg', // Hund
@@ -21,28 +20,28 @@ const themes = {
         'https://upload.wikimedia.org/wikipedia/commons/4/45/Owl.jpg', // Eule
     ],
     früchte: [
-        'https://de.wikipedia.org/wiki/Fresco_(Apfel)', // Apfel
-        'https://de.wikipedia.org/wiki/Cavendish_(Banane)', // Banane
-        'https://de.wikipedia.org/wiki/Weintraube', // Traube
-        'https://de.wikipedia.org/wiki/Datei:Erdbeere.jpg', // Erdbeere
-        'https://de.wikipedia.org/wiki/Datei:210704_ananas-comosus-dreiergruppe-marktware_1-640x480.jpg', // Ananas
-        'https://de.wikipedia.org/wiki/Kiwifrucht', // Kiwi
+        'https://upload.wikimedia.org/wikipedia/commons/1/15/Red_Apple.jpg', // Apfel
+        'https://upload.wikimedia.org/wikipedia/commons/4/44/Bananas.jpg', // Banane
+        'https://upload.wikimedia.org/wikipedia/commons/3/36/Kyoho-grape.jpg', // Traube
+        'https://upload.wikimedia.org/wikipedia/commons/2/29/PerfectStrawberry.jpg', // Erdbeere
+        'https://upload.wikimedia.org/wikipedia/commons/c/cb/Pineapple_and_cross_section.jpg', // Ananas
+        'https://upload.wikimedia.org/wikipedia/commons/d/d3/Kiwi_aka.jpg', // Kiwi
     ],
     motorräder: [
-        'https://de.wikipedia.org/wiki/Datei:2003_HD_XL1200C_Anniversary_Edition.jpg', // Harley Davidson
-        'https://de.wikipedia.org/wiki/Datei:Ducati_Supersport_950_S.jpg', // Ducati
-        'https://de.wikipedia.org/wiki/Datei:2007KawasakiNinjaZX6R-001.jpg', // Kawasaki
-        'https://de.wikipedia.org/wiki/Yamaha_YZF-R_1', // Yamaha
-        'https://de.wikipedia.org/wiki/Datei:Honda_CRF450R.jpg', // Honda
-        'https://de.wikipedia.org/wiki/Suzuki_GSX-8R', // Suzuki
+        'https://upload.wikimedia.org/wikipedia/commons/4/4d/Harley-Davidson_logo.svg', // Harley Davidson
+        'https://upload.wikimedia.org/wikipedia/commons/3/3e/Ducati_logo.svg', // Ducati
+        'https://upload.wikimedia.org/wikipedia/commons/2/2d/Kawasaki_logo.svg', // Kawasaki
+        'https://upload.wikimedia.org/wikipedia/commons/9/9e/Yamaha_logo.svg', // Yamaha
+        'https://upload.wikimedia.org/wikipedia/commons/2/2e/Honda-logo.svg', // Honda
+        'https://upload.wikimedia.org/wikipedia/commons/9/9e/Suzuki_logo.svg', // Suzuki
     ],
     tätigkeiten: [
-        'https://de.wikipedia.org/wiki/Datei:Dokumente_in_S%C3%BCtterlinschrift_lesen_und_%C3%BCbersetzen_02.jpg', // Lesen
-        'https://de.wikipedia.org/wiki/Manuelles_Schreiben', // Schreiben
-        'https://de.wikipedia.org/wiki/Koch', // Kochen
-        'https://de.wikipedia.org/wiki/Mick_Doohan', // Fahren
-        'https://de.wikipedia.org/wiki/Springen', // Springen
-        'https://de.wikipedia.org/wiki/Tauchen', // Tauchen
+        'https://upload.wikimedia.org/wikipedia/commons/6/6b/Reading_a_book.jpg', // Lesen
+        'https://upload.wikimedia.org/wikipedia/commons/3/3e/Writing_with_pen.jpg', // Schreiben
+        'https://upload.wikimedia.org/wikipedia/commons/1/1e/Cooking.jpg', // Kochen
+        'https://upload.wikimedia.org/wikipedia/commons/3/3b/Driving_a_car.jpg', // Fahren
+        'https://upload.wikimedia.org/wikipedia/commons/5/5e/Jumping.jpg', // Springen
+        'https://upload.wikimedia.org/wikipedia/commons/8/8e/Scuba_diving.jpg', // Tauchen
     ],
 };
 
