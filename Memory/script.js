@@ -1,5 +1,11 @@
 const gameBoard = document.querySelector('.game-board');
 const themeButtons = document.querySelectorAll('.theme-selection button');
+const playAloneButton = document.getElementById('play-alone');
+const playAgainstBotButton = document.getElementById('play-against-bot');
+const restartButton = document.getElementById('restart-game'); // Restart-Button
+
+let isPlayingAgainstBot = false; // Standardmäßig alleine spielen
+let currentTheme = null; // Aktuelles Thema
 
 // Themen mit lokalen Bildern
 const themes = {
@@ -36,12 +42,12 @@ const themes = {
         'images/Motorräder/Suzuki.jpg', //Suzuki
     ],
     tätigkeiten: [
-        'images/Tätigkeiten/lesen.jpg',
-        'images/Tätigkeiten/schreiben.jpg',
-        'images/Tätigkeiten/Kochen.jpg',
-        'images/Tätigkeiten/fahren.jpg',
-        'images/Tätigkeiten/springen.jpg',
-        'images/Tätigkeiten/Tauchen.jpg',
+        'images/Tätigkeiten/lesen.jpg', // Lesen
+        'images/Tätigkeiten/schreiben.jpg', // Schreiben
+        'images/Tätigkeiten/Kochen.jpg', // Kochen
+        'images/Tätigkeiten/fahren.jpg', // Fahren
+        'images/Tätigkeiten/springen.jpg', // Springen
+        'images/Tätigkeiten/Tauchen.jpg', // Tauchen
     ],
 };
 
@@ -56,6 +62,7 @@ function shuffle(array) {
 
 // Spiel starten
 function startGame(theme) {
+    currentTheme = theme; // Speichere das aktuelle Thema
     gameBoard.innerHTML = '';
     const images = themes[theme];
     const cards = shuffle([...images, ...images]); // Paare erstellen
@@ -63,9 +70,23 @@ function startGame(theme) {
         const card = document.createElement('div');
         card.classList.add('card');
         card.dataset.src = src;
-        card.innerHTML = `<img src="${src}" alt="Memory Card" style="visibility: hidden;">`;
+
+        // Füge das Bild hinzu
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = 'Memory Card';
+        img.style.visibility = 'hidden'; // Standardmäßig verstecken
+        img.style.maxWidth = '100%'; // Bildgröße anpassen
+        img.style.maxHeight = '100%'; // Bildgröße anpassen
+        img.style.objectFit = 'cover'; // Bild skaliert sich, um die Karte auszufüllen
+
+        card.appendChild(img);
         gameBoard.appendChild(card);
     });
+
+    if (isPlayingAgainstBot) {
+        setTimeout(botTurn, 2000); // Bot beginnt nach 2 Sekunden
+    }
 }
 
 // Kartenlogik
@@ -74,6 +95,8 @@ let secondCard = null;
 let lockBoard = false;
 
 gameBoard.addEventListener('click', event => {
+    if (isPlayingAgainstBot && lockBoard) return; // Spieler kann nicht klicken, wenn der Bot dran ist
+
     const clickedCard = event.target.closest('.card');
     if (!clickedCard || clickedCard.classList.contains('flipped') || lockBoard) return;
 
@@ -106,12 +129,58 @@ function resetTurn() {
     firstCard = null;
     secondCard = null;
     lockBoard = false;
+
+    if (isPlayingAgainstBot) {
+        setTimeout(botTurn, 1000); // Bot ist nach 1 Sekunde dran
+    }
 }
 
-// Thema auswählen
-themeButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        const theme = button.dataset.theme;
-        startGame(theme);
-    });
+// Bot-Logik
+function botTurn() {
+    const unmatchedCards = Array.from(document.querySelectorAll('.card:not(.matched):not(.flipped)'));
+    if (unmatchedCards.length < 2) return; // Keine Züge mehr möglich
+
+    const firstBotCard = unmatchedCards[Math.floor(Math.random() * unmatchedCards.length)];
+    firstBotCard.classList.add('flipped');
+    firstBotCard.querySelector('img').style.visibility = 'visible';
+
+    setTimeout(() => {
+        const secondBotCard = unmatchedCards.filter(card => card !== firstBotCard)[Math.floor(Math.random() * (unmatchedCards.length - 1))];
+        secondBotCard.classList.add('flipped');
+        secondBotCard.querySelector('img').style.visibility = 'visible';
+
+        if (firstBotCard.dataset.src === secondBotCard.dataset.src) {
+            firstBotCard.classList.add('matched');
+            secondBotCard.classList.add('matched');
+        } else {
+            setTimeout(() => {
+                firstBotCard.classList.remove('flipped');
+                secondBotCard.classList.remove('flipped');
+                firstBotCard.querySelector('img').style.visibility = 'hidden';
+                secondBotCard.querySelector('img').style.visibility = 'hidden';
+            }, 1000);
+        }
+
+        lockBoard = false; // Spieler ist wieder dran
+    }, 1000);
+}
+
+// Spielmodus auswählen
+playAloneButton.addEventListener('click', () => {
+    isPlayingAgainstBot = false;
+    alert('Du spielst alleine!');
+});
+
+playAgainstBotButton.addEventListener('click', () => {
+    isPlayingAgainstBot = true;
+    alert('Du spielst gegen den Bot!');
+});
+
+// Neustart-Button
+restartButton.addEventListener('click', () => {
+    if (currentTheme) {
+        startGame(currentTheme); // Starte das Spiel mit dem aktuellen Thema neu
+    } else {
+        alert('Bitte wähle zuerst ein Thema aus!');
+    }
 });
