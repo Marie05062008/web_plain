@@ -1,7 +1,9 @@
-const gameModeContainer = document.getElementById('game-mode');
 const themeSelectionContainer = document.getElementById('theme-selection');
 const gameBoardContainer = document.getElementById('game-board-container');
 const gameBoard = document.querySelector('.game-board');
+const themeButtons = document.querySelectorAll('.theme-button');
+
+let currentTheme = null; // Aktuelles Thema
 
 // Themen mit lokalen Bildern
 const themes = {
@@ -30,12 +32,12 @@ const themes = {
         'images/Obst/Kirsche.jpg', // Kirsche
     ],
     motorräder: [
-        'images/Motorräder/BMW S1000rr.jpg', //BMW
-        'images/Motorräder/Ducati_Panigale_V4.jpg', //Ducati
-        'images/Motorräder/Kawasaki_Ninja.jpg', //Kawasaki
-        'images/Motorräder/Yamaha_R1M.jpg', //Yamaha
-        'images/Motorräder/Honda.jpg', //Honda
-        'images/Motorräder/Suzuki.jpg', //Suzuki
+        'images/Motorräder/BMW S1000rr.jpg', // BMW
+        'images/Motorräder/Ducati_Panigale_V4.jpg', // Ducati
+        'images/Motorräder/Kawasaki_Ninja.jpg', // Kawasaki
+        'images/Motorräder/Yamaha_R1M.jpg', // Yamaha
+        'images/Motorräder/Honda.jpg', // Honda
+        'images/Motorräder/Suzuki.jpg', // Suzuki
     ],
     tätigkeiten: [
         'images/Tätigkeiten/lesen.jpg', // Lesen
@@ -79,52 +81,19 @@ function startGame(theme) {
         card.appendChild(img);
         gameBoard.appendChild(card);
     });
+
+    themeSelectionContainer.style.display = 'none';
+    gameBoardContainer.style.display = 'block';
 }
 
-// Kartenlogik
-let firstCard = null;
-let secondCard = null;
-let lockBoard = false;
-
-gameBoard.addEventListener('click', event => {
-    const clickedCard = event.target.closest('.card');
-    if (!clickedCard || clickedCard.classList.contains('flipped') || lockBoard) return;
-
-    clickedCard.classList.add('flipped');
-    clickedCard.querySelector('img').style.visibility = 'visible';
-
-    if (!firstCard) {
-        firstCard = clickedCard;
-    } else {
-        secondCard = clickedCard;
-        lockBoard = true;
-
-        if (firstCard.dataset.src === secondCard.dataset.src) {
-            firstCard.classList.add('matched');
-            secondCard.classList.add('matched');
-            resetTurn();
-        } else {
-            setTimeout(() => {
-                firstCard.classList.remove('flipped');
-                secondCard.classList.remove('flipped');
-                firstCard.querySelector('img').style.visibility = 'hidden';
-                secondCard.querySelector('img').style.visibility = 'hidden';
-                resetTurn();
-            }, 1000);
-        }
-    }
-});
-
-function resetTurn() {
-    firstCard = null;
-    secondCard = null;
-    lockBoard = false;
-}
-
-// Thema auswählen
+// Event-Listener für Themen-Buttons
 themeButtons.forEach(button => {
     button.addEventListener('click', () => {
-        const theme = button.dataset.theme;
-        startGame(theme);
+        const theme = button.dataset.theme; // Hole das Thema aus dem data-theme-Attribut
+        if (theme) {
+            startGame(theme); // Starte das Spiel mit dem ausgewählten Thema
+        } else {
+            alert('Thema nicht gefunden!');
+        }
     });
 });
