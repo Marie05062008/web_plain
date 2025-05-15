@@ -11,7 +11,7 @@ const scoreDisplay = document.getElementById('score-display');
 let isJumping = false;
 let lives = 3;
 let score = 0;
-const obstacleSpeed = 60; // Geschwindigkeit der Hindernisse
+const obstacleSpeed = 10; // Erhöhte Geschwindigkeit der Hindernisse
 const obstacleSpacing = 800; // Abstand zwischen Hindernissen
 const startOffset = 1500; // Startposition des ersten Hindernisses
 
@@ -29,11 +29,11 @@ function jump() {
                     clearInterval(fallInterval);
                     isJumping = false;
                 }
-                jumpHeight -= 20; // Schnelleres Fallen
+                jumpHeight -= 20; // Langsameres Fallen
                 player.style.bottom = `${jumpHeight + 50}px`;
             }, 20);
         }
-        jumpHeight += 20; // Schnelleres Springen
+        jumpHeight += 20; // Langsameres Springen
         player.style.bottom = `${jumpHeight + 50}px`;
     }, 20);
 }
