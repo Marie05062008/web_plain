@@ -136,7 +136,7 @@ function moveObstacles() {
 
         if (obsLeft <= -50) {
             // Hindernis zurücksetzen, wenn es den Bildschirm verlässt
-            obs.style.left = `${1500 + index * 500}px`; // Abstand von 500px zwischen den Hindernissen, Start weiter rechts
+            obs.style.left = `${2000 + index * 600}px`; // Abstand von 600px zwischen den Hindernissen, Start weiter rechts
         } else {
             // Hindernis bewegen
             obs.style.left = `${obsLeft - obstacleSpeed}px`;
@@ -148,7 +148,7 @@ function moveObstacles() {
 function initializeObstacles() {
     const obstacles = [obstacle, lowObstacle, largeObstacle];
     obstacles.forEach((obs, index) => {
-        obs.style.left = `${1500 + index * 500}px`; // Startposition weiter rechts
+        obs.style.left = `${2000 + index * 600}px`; // Startposition weiter rechts
     });
 }
 
