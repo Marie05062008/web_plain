@@ -24,31 +24,31 @@ function jump() {
     if (isJumping && canDoubleJump) {
         // Doppelsprung
         canDoubleJump = false;
-        performJump(doubleJumpHeight);
+        performJump(doubleJumpHeight, true);
     } else if (!isJumping) {
         // Erster Sprung
         isJumping = true;
         canDoubleJump = true;
-        performJump(maxJumpHeight);
+        performJump(maxJumpHeight, false);
     }
 }
 
-function performJump(height) {
-    let jumpHeight = 0;
+function performJump(height, isDoubleJump) {
+    let jumpHeight = parseInt(player.style.bottom) || 50; // Aktuelle Position
     const jumpInterval = setInterval(() => {
         if (jumpHeight >= height) {
             clearInterval(jumpInterval);
             const fallInterval = setInterval(() => {
-                if (jumpHeight <= 0) {
+                if (jumpHeight <= 50) {
                     clearInterval(fallInterval);
                     isJumping = false;
                 }
                 jumpHeight -= 10;
-                player.style.bottom = `${jumpHeight + 50}px`;
+                player.style.bottom = `${jumpHeight}px`;
             }, 20);
         }
         jumpHeight += 10;
-        player.style.bottom = `${jumpHeight + 50}px`;
+        player.style.bottom = `${jumpHeight}px`;
     }, 20);
 }
 
@@ -126,8 +126,13 @@ function increaseScore() {
 function synchronizeObstacles() {
     const obstacleSpeed = 3; // Geschwindigkeit in Sekunden
     obstacle.style.animationDuration = `${obstacleSpeed}s`;
-    lowObstacle.style.animationDuration = `${obstacleSpeed}s`; // Gleiche Geschwindigkeit
-    largeObstacle.style.animationDuration = `${obstacleSpeed}s`; // Gleiche Geschwindigkeit
+    lowObstacle.style.animationDuration = `${obstacleSpeed}s`;
+    largeObstacle.style.animationDuration = `${obstacleSpeed}s`;
+
+    // Hindernisse mit Abstand starten
+    obstacle.style.animationDelay = '0s';
+    lowObstacle.style.animationDelay = '1s'; // Startet 1 Sekunde später
+    largeObstacle.style.animationDelay = '2s'; // Startet 2 Sekunden später
 }
 
 // Spiel zurücksetzen
