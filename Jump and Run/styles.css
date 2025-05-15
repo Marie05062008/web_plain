@@ -1,34 +1,17 @@
 body {
     margin: 0;
-    padding: 0;
     font-family: Arial, sans-serif;
-    background-color: #87CEEB; /* Himmelblau */
+    background-color: #f0f0f0;
     overflow: hidden;
-}
-
-.back-button {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    padding: 10px 20px;
-    font-size: 1em;
-    color: white;
-    background: #007bff;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background 0.3s ease;
-}
-
-.back-button:hover {
-    background: #0056b3;
 }
 
 #game-container {
     position: relative;
     width: 100%;
-    height: 100vh;
+    height: 400px;
+    background-color: #87ceeb;
     overflow: hidden;
-    background: linear-gradient(to bottom, #87CEEB, #4CAF50); /* Himmel zu Gras */
+    border: 2px solid #000;
 }
 
 #player {
@@ -36,146 +19,55 @@ body {
     bottom: 50px;
     left: 50px;
     width: 50px;
-    height: 80px;
-    background-color: #ffcc00; /* Gelber Körper */
+    height: 50px;
+    background-color: red;
     border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    overflow: hidden;
 }
 
-#player::before {
-    content: '';
-    position: absolute;
-    bottom: 70px;
-    width: 30px;
-    height: 30px;
-    background-color: #ff9966; /* Gesicht */
-    border-radius: 50%;
-}
-
-#obstacle {
+.obstacle {
     position: absolute;
     bottom: 50px;
-    right: 0;
     width: 50px;
     height: 50px;
-    background-color: black;
+    background-color: green;
     border-radius: 5px;
-    animation: moveObstacle 2s linear infinite;
 }
 
-#low-obstacle {
-    position: absolute;
-    bottom: 100px;
-    right: 0;
-    width: 50px;
-    height: 30px;
-    background-color: darkred;
-    border-radius: 5px;
-    animation: moveObstacle 3s linear infinite;
+#obstacle-2 {
+    bottom: 150px; /* Schwebendes Hindernis */
 }
 
-#large-obstacle {
-    position: absolute;
-    bottom: 50px;
-    right: 0;
-    width: 50px;
-    height: 100px; /* Doppelt so groß wie die anderen Hindernisse */
-    background-color: darkblue;
-    border-radius: 5px;
-    animation: moveObstacle 3s linear infinite;
-}
-
-@keyframes moveObstacle {
-    from {
-        right: -50px;
-    }
-    to {
-        right: 100%;
-    }
-}
-
-#score {
+#lives-container {
     position: absolute;
     top: 10px;
     right: 10px;
-    font-size: 1.5em;
-    color: white;
+    font-size: 24px;
 }
 
-#lives {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    font-size: 1.5em;
-    color: red;
-}
-
-.heart {
-    margin-right: 5px;
-}
-
-#game-over {
+#game-over-screen {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    background: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.8);
     color: white;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
-#game-over h1 {
-    margin-bottom: 20px;
-}
-
-#reset-button, .menu-button {
-    display: inline-block;
+#restart-button, #menu-button {
     margin: 10px;
     padding: 10px 20px;
-    font-size: 1em;
-    color: white;
-    background: #007bff;
-    text-decoration: none;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
-
-#reset-button:hover, .menu-button:hover {
-    background: #0056b3;
-}
-
-.ducking {
-    height: 40px !important; /* Spieler duckt sich */
-}
-
-#controls {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 20px;
-}
-
-#controls button {
-    padding: 15px 30px;
-    font-size: 1.2em;
+    font-size: 16px;
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    text-decoration: none;
 }
 
-#controls button:hover {
+#restart-button:hover, #menu-button:hover {
     background-color: #0056b3;
 }

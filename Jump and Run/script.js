@@ -1,24 +1,27 @@
 const player = document.getElementById('player');
-const obstacle = document.getElementById('obstacle');
-const lowObstacle = document.getElementById('low-obstacle');
-const scoreDisplay = document.getElementById('score');
-const livesContainer = document.getElementById('lives');
-const gameOverScreen = document.getElementById('game-over');
-const resetButton = document.getElementById('reset-button');
+const obstacles = [
+    document.getElementById('obstacle-1'),
+    document.getElementById('obstacle-2'),
+    document.getElementById('obstacle-3')
+];
+const livesContainer = document.getElementById('lives-container');
+const gameOverScreen = document.getElementById('game-over-screen');
+const restartButton = document.getElementById('restart-button');
+const menuButton = document.getElementById('menu-button');
 
 let isJumping = false;
-let isDucking = false;
-let score = 0;
 let lives = 3;
+const obstacleSpeed = 5; // Geschwindigkeit der Hindernisse
+const obstacleSpacing = 600; // Abstand zwischen Hindernissen
 
 // Spieler springen lassen
 function jump() {
-    if (isJumping || isDucking) return; // Nicht springen, wenn der Spieler duckt
+    if (isJumping) return;
     isJumping = true;
 
     let jumpHeight = 0;
     const jumpInterval = setInterval(() => {
-        if (jumpHeight >= 200) {
+        if (jumpHeight >= 150) {
             clearInterval(jumpInterval);
             const fallInterval = setInterval(() => {
                 if (jumpHeight <= 0) {
@@ -34,41 +37,37 @@ function jump() {
     }, 20);
 }
 
-// Spieler ducken lassen
-function duck() {
-    if (isJumping || isDucking) return; // Nicht ducken, wenn der Spieler springt
-    isDucking = true;
-    player.classList.add('ducking');
+// Hindernisse bewegen
+function moveObstacles() {
+    obstacles.forEach((obstacle, index) => {
+        let obsLeft = parseInt(window.getComputedStyle(obstacle).getPropertyValue('left')) || 0;
 
-    setTimeout(() => {
-        player.classList.remove('ducking');
-        isDucking = false;
-    }, 1000); // Ducken dauert 1 Sekunde
+        if (obsLeft <= -50) {
+            // Hindernis zurücksetzen, wenn es den Bildschirm verlässt
+            obstacle.style.left = `${1500 + index * obstacleSpacing}px`;
+        } else {
+            // Hindernis bewegen
+            obstacle.style.left = `${obsLeft - obstacleSpeed}px`;
+        }
+    });
 }
 
 // Hindernis-Kollision prüfen
 function checkCollision() {
     const playerRect = player.getBoundingClientRect();
-    const obstacleRect = obstacle.getBoundingClientRect();
-    const lowObstacleRect = lowObstacle.getBoundingClientRect();
 
-    if (
-        playerRect.right > obstacleRect.left &&
-        playerRect.left < obstacleRect.right &&
-        playerRect.bottom > obstacleRect.top &&
-        playerRect.top < obstacleRect.bottom
-    ) {
-        loseLife();
-    }
+    obstacles.forEach(obstacle => {
+        const obstacleRect = obstacle.getBoundingClientRect();
 
-    if (
-        playerRect.right > lowObstacleRect.left &&
-        playerRect.left < lowObstacleRect.right &&
-        playerRect.bottom > lowObstacleRect.top &&
-        playerRect.top < lowObstacleRect.bottom
-    ) {
-        loseLife();
-    }
+        if (
+            playerRect.right > obstacleRect.left &&
+            playerRect.left < obstacleRect.right &&
+            playerRect.bottom > obstacleRect.top &&
+            playerRect.top < obstacleRect.bottom
+        ) {
+            loseLife();
+        }
+    });
 }
 
 // Leben verlieren
@@ -84,79 +83,33 @@ function loseLife() {
 
 // Spiel beenden
 function endGame() {
-    gameOverScreen.style.display = 'block';
     clearInterval(gameLoop);
-}
-
-// Punktzahl erhöhen
-function increaseScore() {
-    score++;
-    scoreDisplay.textContent = `Punkte: ${score}`;
+    gameOverScreen.style.display = 'block';
 }
 
 // Spiel zurücksetzen
-resetButton.addEventListener('click', () => {
+restartButton.addEventListener('click', () => {
     location.reload(); // Seite neu laden
-});
-
-// Steuerung für Handyspieler
-document.addEventListener('touchstart', (e) => {
-    const touchX = e.touches[0].clientX;
-    const screenWidth = window.innerWidth;
-
-    if (touchX < screenWidth / 2) {
-        // Linke Bildschirmhälfte: Springen
-        jump();
-    } else {
-        // Rechte Bildschirmhälfte: Ducken
-        duck();
-    }
 });
 
 // Steuerung für Tastaturspieler
 document.addEventListener('keydown', (e) => {
     if (e.code === 'Space') {
         jump();
-    } else if (e.code === 'ArrowDown') {
-        duck();
     }
 });
 
-// Hindernisse mit genügend Abstand
-function adjustObstacleSpeed() {
-    obstacle.style.animationDuration = '3s'; // Hindernis bewegt sich langsamer
-    lowObstacle.style.animationDuration = '4s'; // Niedriges Hindernis bewegt sich langsamer
-}
-
-// Hindernisse bewegen
-function moveObstacles() {
-    const obstacles = [obstacle, lowObstacle, largeObstacle];
-    obstacles.forEach((obs, index) => {
-        let obsLeft = parseInt(window.getComputedStyle(obs).getPropertyValue('left')) || 0;
-
-        if (obsLeft <= -50) {
-            // Hindernis zurücksetzen, wenn es den Bildschirm verlässt
-            obs.style.left = `${2000 + index * 600}px`; // Abstand von 600px zwischen den Hindernissen, Start weiter rechts
-        } else {
-            // Hindernis bewegen
-            obs.style.left = `${obsLeft - obstacleSpeed}px`;
-        }
-    });
-}
-
-// Hindernisse mit Abstand starten
-function initializeObstacles() {
-    const obstacles = [obstacle, lowObstacle, largeObstacle];
-    obstacles.forEach((obs, index) => {
-        obs.style.left = `${2000 + index * 600}px`; // Startposition weiter rechts
-    });
-}
-
-// Kollision und Punktzahl prüfen
+// Spiel-Loop
 const gameLoop = setInterval(() => {
+    moveObstacles();
     checkCollision();
-    increaseScore();
-}, 100);
+}, 20);
 
-// Hindernisgeschwindigkeit anpassen
-adjustObstacleSpeed();
+// Hindernisse initialisieren
+function initializeObstacles() {
+    obstacles.forEach((obstacle, index) => {
+        obstacle.style.left = `${1500 + index * obstacleSpacing}px`; // Startposition weiter rechts
+    });
+}
+
+initializeObstacles();
