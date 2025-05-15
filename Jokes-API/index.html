@@ -3,21 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Witze-API</title>
+    <title>Joke Game</title>
     <link rel="stylesheet" href="styles.css">
-    <script defer src="script.js"></script>
 </head>
 <body>
-    <a href="../index.html" class="back-button">Zurück zum Menü</a>
+    <a href="#" class="back-button">Zurück</a>
     <section class="jokes-section">
-        <h2>Witze-API</h2>
-        <p>Wähle eine Kategorie oder suche nach einer Kategorie!</p>
-        <input type="text" id="search-category" placeholder="Kategorie suchen..." />
+        <h2>Wähle eine Kategorie oder suche nach einem Witz</h2>
         <select id="joke-category">
-            <!-- Kategorien werden dynamisch geladen -->
+            <option value="Any">Beliebig</option>
+            <option value="Programming">Programmierung</option>
+            <option value="Miscellaneous">Verschiedenes</option>
+            <option value="Dark">Dunkel</option>
+            <option value="Pun">Wortspiele</option>
+            <option value="Spooky">Gruselig</option>
+            <option value="Christmas">Weihnachten</option>
         </select>
-        <button id="get-joke">Witz anzeigen</button>
-        <p id="joke-display"></p>
+        <input type="text" id="search-category" placeholder="Suchbegriff eingeben..." />
+        <button id="get-joke">Erzähl mir einen Witz!</button>
+        <div id="joke-display"></div>
     </section>
+    <script src="script.js"></script>
 </body>
 </html>

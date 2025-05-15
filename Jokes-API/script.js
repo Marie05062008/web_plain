@@ -1,14 +1,37 @@
-// server.mjs
-import { createServer } from 'node:http';
+const jokeCategory = document.getElementById('joke-category');
+const searchCategory = document.getElementById('search-category');
+const getJokeButton = document.getElementById('get-joke');
+const jokeDisplay = document.getElementById('joke-display');
 
-const server = createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.end('Hello World!\n');
+// Funktion, um einen Witz von der API abzurufen
+async function fetchJoke(category, searchTerm) {
+    let url = 'https://v2.jokeapi.dev/joke/';
+    url += category ? category : 'Any';
+
+    // Wenn ein Suchbegriff eingegeben wurde, füge ihn als Parameter hinzu
+    if (searchTerm) {
+        url += `?contains=${encodeURIComponent(searchTerm)}`;
+    }
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.error) {
+            jokeDisplay.textContent = 'Kein Witz gefunden. Versuche es erneut!';
+        } else if (data.type === 'single') {
+            jokeDisplay.textContent = data.joke; // Einzeiler-Witz
+        } else if (data.type === 'twopart') {
+            jokeDisplay.innerHTML = `<p>${data.setup}</p><p><strong>${data.delivery}</strong></p>`; // Zweiteiliger Witz
+        }
+    } catch (error) {
+        jokeDisplay.textContent = 'Fehler beim Abrufen des Witzes. Bitte versuche es später erneut.';
+    }
+}
+
+// Event-Listener für den Button
+getJokeButton.addEventListener('click', () => {
+    const category = jokeCategory.value;
+    const searchTerm = searchCategory.value.trim();
+    fetchJoke(category, searchTerm);
 });
-
-// starts a simple http server locally on port 3000
-server.listen(3000, '127.0.0.1', () => {
-  console.log('Listening on 127.0.0.1:3000');
-});
-
-// run with `node server.mjs`
