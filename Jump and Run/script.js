@@ -17,7 +17,7 @@ let score = 0;
 let lives = 3;
 const maxJumpHeight = 150; // Maximale Sprunghöhe
 const doubleJumpHeight = 250; // Maximale Höhe für Doppelsprung
-const obstacleSpeed = 5; // Geschwindigkeit der Hindernisse (in Pixeln pro Frame)
+const obstacleSpeed = 10; // Geschwindigkeit der Hindernisse (in Pixeln pro Frame)
 
 // Spieler springen lassen
 function jump() {
@@ -36,7 +36,6 @@ function jump() {
 }
 
 function performJump(targetHeight) {
-    const startHeight = currentJumpHeight; // Aktuelle Sprunghöhe
     const jumpInterval = setInterval(() => {
         if (currentJumpHeight >= targetHeight) {
             clearInterval(jumpInterval);
@@ -45,6 +44,7 @@ function performJump(targetHeight) {
                     clearInterval(fallInterval);
                     isJumping = false;
                     currentJumpHeight = 0;
+                    player.style.bottom = '0px'; // Zurück auf den Boden
                 }
                 currentJumpHeight -= 10;
                 player.style.bottom = `${currentJumpHeight}px`;
@@ -133,7 +133,7 @@ function moveObstacles() {
 
         if (obsLeft <= -50) {
             // Hindernis zurücksetzen, wenn es den Bildschirm verlässt
-            obs.style.left = '100%';
+            obs.style.left = `${100 + index * 500}px`; // Abstand von 500px zwischen den Hindernissen
         } else {
             // Hindernis bewegen
             obs.style.left = `${obsLeft - obstacleSpeed}px`;
@@ -145,7 +145,7 @@ function moveObstacles() {
 function initializeObstacles() {
     const obstacles = [obstacle, lowObstacle, largeObstacle];
     obstacles.forEach((obs, index) => {
-        obs.style.left = `${100 + index * 300}px`; // Abstand von 300px zwischen den Hindernissen
+        obs.style.left = `${100 + index * 500}px`; // Abstand von 500px zwischen den Hindernissen
     });
 }
 
