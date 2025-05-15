@@ -5,8 +5,7 @@ const jokeDisplay = document.getElementById('joke-display');
 
 // Funktion, um einen Witz von der API abzurufen
 async function fetchJoke(category, searchTerm) {
-    let url = 'https://v2.jokeapi.dev/joke/';
-    url += category ? category : 'Any';
+    let url = `https://v2.jokeapi.dev/joke/${category ? category : 'Any'}`;
 
     // Wenn ein Suchbegriff eingegeben wurde, füge ihn als Parameter hinzu
     if (searchTerm) {
