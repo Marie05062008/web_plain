@@ -26,19 +26,17 @@ function jump() {
     if (isJumping && canDoubleJump) {
         // Doppelsprung
         canDoubleJump = false;
-        performJump(doubleJumpHeight, true);
+        performJump(doubleJumpHeight);
     } else if (!isJumping) {
         // Erster Sprung
         isJumping = true;
         canDoubleJump = true;
-        performJump(maxJumpHeight, false);
+        performJump(maxJumpHeight);
     }
 }
 
-function performJump(height, isDoubleJump) {
+function performJump(targetHeight) {
     const startHeight = currentJumpHeight; // Aktuelle Sprunghöhe
-    const targetHeight = isDoubleJump ? doubleJumpHeight : maxJumpHeight;
-
     const jumpInterval = setInterval(() => {
         if (currentJumpHeight >= targetHeight) {
             clearInterval(jumpInterval);
@@ -143,6 +141,14 @@ function moveObstacles() {
     });
 }
 
+// Hindernisse mit Abstand starten
+function initializeObstacles() {
+    const obstacles = [obstacle, lowObstacle, largeObstacle];
+    obstacles.forEach((obs, index) => {
+        obs.style.left = `${100 + index * 300}px`; // Abstand von 300px zwischen den Hindernissen
+    });
+}
+
 // Spiel zurücksetzen
 resetButton.addEventListener('click', () => {
     location.reload(); // Seite neu laden
@@ -167,3 +173,6 @@ const gameLoop = setInterval(() => {
     increaseScore();
     moveObstacles();
 }, 100);
+
+// Hindernisse initialisieren
+initializeObstacles();
