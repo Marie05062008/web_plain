@@ -72,8 +72,8 @@ body {
 #menu-button {
     display: inline-block;
     margin-top: 10px;
-    padding: 10px 20px;
-    font-size: 16px;
+    padding: 15px 30px; /* Gleiche Größe wie die anderen Buttons */
+    font-size: 18px; /* Gleiche Schriftgröße wie die anderen Buttons */
     background-color: #007bff;
     color: white;
     border: none;
