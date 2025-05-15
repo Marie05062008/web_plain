@@ -13,6 +13,7 @@ let isJumping = false;
 let lives = 3;
 const obstacleSpeed = 5; // Geschwindigkeit der Hindernisse
 const obstacleSpacing = 600; // Abstand zwischen Hindernissen
+const startOffset = 1500; // Startposition des ersten Hindernisses
 
 // Spieler springen lassen
 function jump() {
@@ -44,7 +45,7 @@ function moveObstacles() {
 
         if (obsLeft <= -50) {
             // Hindernis zurücksetzen, wenn es den Bildschirm verlässt
-            obstacle.style.left = `${1500 + index * obstacleSpacing}px`;
+            obstacle.style.left = `${startOffset + index * obstacleSpacing}px`;
         } else {
             // Hindernis bewegen
             obstacle.style.left = `${obsLeft - obstacleSpeed}px`;
@@ -108,7 +109,7 @@ const gameLoop = setInterval(() => {
 // Hindernisse initialisieren
 function initializeObstacles() {
     obstacles.forEach((obstacle, index) => {
-        obstacle.style.left = `${1500 + index * obstacleSpacing}px`; // Startposition weiter rechts
+        obstacle.style.left = `${startOffset + index * obstacleSpacing}px`; // Startposition weiter rechts
     });
 }
 
