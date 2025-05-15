@@ -102,11 +102,6 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-const menuButton = document.getElementById('menu-button');
-menuButton.addEventListener('click', () => {
-    console.log('Zurück zum Menü-Button wurde geklickt');
-});
-
 // Spiel-Loop
 const gameLoop = setInterval(() => {
     moveObstacles();
