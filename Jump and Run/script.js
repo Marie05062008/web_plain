@@ -128,6 +128,30 @@ function adjustObstacleSpeed() {
     lowObstacle.style.animationDuration = '4s'; // Niedriges Hindernis bewegt sich langsamer
 }
 
+// Hindernisse bewegen
+function moveObstacles() {
+    const obstacles = [obstacle, lowObstacle, largeObstacle];
+    obstacles.forEach((obs, index) => {
+        let obsLeft = parseInt(window.getComputedStyle(obs).getPropertyValue('left')) || 0;
+
+        if (obsLeft <= -50) {
+            // Hindernis zurücksetzen, wenn es den Bildschirm verlässt
+            obs.style.left = `${1500 + index * 500}px`; // Abstand von 500px zwischen den Hindernissen, Start weiter rechts
+        } else {
+            // Hindernis bewegen
+            obs.style.left = `${obsLeft - obstacleSpeed}px`;
+        }
+    });
+}
+
+// Hindernisse mit Abstand starten
+function initializeObstacles() {
+    const obstacles = [obstacle, lowObstacle, largeObstacle];
+    obstacles.forEach((obs, index) => {
+        obs.style.left = `${1500 + index * 500}px`; // Startposition weiter rechts
+    });
+}
+
 // Kollision und Punktzahl prüfen
 const gameLoop = setInterval(() => {
     checkCollision();
