@@ -7,9 +7,12 @@ const jokeDisplay = document.getElementById('joke-display');
 async function fetchJoke(category, searchTerm) {
     let url = `https://v2.jokeapi.dev/joke/${category ? category : 'Any'}`;
 
+    // Sprache auf Deutsch setzen
+    url += `?lang=de`;
+
     // Wenn ein Suchbegriff eingegeben wurde, füge ihn als Parameter hinzu
     if (searchTerm) {
-        url += `?contains=${encodeURIComponent(searchTerm)}`;
+        url += `&contains=${encodeURIComponent(searchTerm)}`;
     }
 
     try {
@@ -33,4 +36,3 @@ getJokeButton.addEventListener('click', () => {
     const category = jokeCategory.value;
     const searchTerm = searchCategory.value.trim();
     fetchJoke(category, searchTerm);
-});
