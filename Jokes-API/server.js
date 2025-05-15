@@ -1,59 +1,54 @@
-const express = require('express');
-const app = express();
-const port = 3000;
+// Kategorien laden
+async function loadCategories() {
+    try {
+        const response = await fetch('http://localhost:3000/api/categories');
+        const categories = await response.json();
 
-// Witze-Datenbank
-const jokes = {
-    tiere: [
-        "Warum können Geister so schlecht lügen? Weil man durch sie hindurchsehen kann!",
-        "Warum können Elefanten nicht fliegen? Weil sie keine Flugtickets kaufen können!"
-    ],
-    technik: [
-        "Was macht ein Pirat am Computer? Er drückt die Enter-Taste!",
-        "Warum sind Programmierer so schlecht im Tennis? Weil sie Angst vor Fehlern haben!"
-    ],
-    allgemein: [
-        "Warum können Geister keine Partys feiern? Weil sie immer durch die Wände gehen!",
-        "Warum können Bäcker so gut flirten? Weil sie immer süße Sachen sagen!"
-    ]
-};
+        const categorySelect = document.getElementById('joke-category');
+        const searchInput = document.getElementById('search-category');
 
-// Endpunkt: Alle Kategorien abrufen
-app.get('/api/categories', (req, res) => {
-    res.json(Object.keys(jokes));
-});
+        // Funktion zum Rendern der Kategorien
+        const renderCategories = (filteredCategories) => {
+            categorySelect.innerHTML = ''; // Dropdown-Menü leeren
+            filteredCategories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category;
+                option.textContent = category;
+                categorySelect.appendChild(option);
+            });
+        };
 
-// Endpunkt: Witze einer bestimmten Kategorie abrufen
-app.post('/api/jokes/:category', (req, res) => {
-    const category = req.params.category;
-    const newJoke = req.body.joke;
+        // Initial alle Kategorien anzeigen
+        renderCategories(categories);
 
-    if (!newJoke) {
-        return res.status(400).json({ error: "Witz fehlt" });
+        // Suchfunktion
+        searchInput.addEventListener('input', () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filteredCategories = categories.filter(category =>
+                category.toLowerCase().includes(searchTerm)
+            );
+            renderCategories(filteredCategories);
+        });
+    } catch (error) {
+        console.error('Fehler beim Laden der Kategorien:', error);
     }
+}
 
-    if (!jokes[category]) {
-        jokes[category] = [];
-    }
+// Zufälligen Witz anzeigen
+document.getElementById('get-joke').addEventListener('click', async () => {
+    const category = document.getElementById('joke-category').value;
 
-    jokes[category].push(newJoke);
-    res.status(201).json({ message: "Witz hinzugefügt", joke: newJoke });
-});
-
-// Endpunkt: Zufälligen Witz aus einer Kategorie abrufen
-app.get('/api/jokes/:category/random', (req, res) => {
-    const category = req.params.category;
-    const jokeList = jokes[category];
-
-    if (jokeList) {
-        const randomJoke = jokeList[Math.floor(Math.random() * jokeList.length)];
-        res.json({ joke: randomJoke });
-    } else {
-        res.status(404).json({ error: "Kategorie nicht gefunden" });
+    try {
+        const response = await fetch(`http://localhost:3000/api/jokes/${category}/random`);
+        if (!response.ok) {
+            throw new Error('Fehler beim Abrufen des Witzes');
+        }
+        const data = await response.json();
+        document.getElementById('joke-display').textContent = data.joke;
+    } catch (error) {
+        document.getElementById('joke-display').textContent = 'Fehler: ' + error.message;
     }
 });
 
-// Server starten
-app.listen(port, () => {
-    console.log(`Witze-API läuft unter http://localhost:${port}`);
-});
+// Kategorien laden, wenn die Seite geladen wird
+document.addEventListener('DOMContentLoaded', loadCategories);
