@@ -1,27 +1,24 @@
 const player = document.getElementById('player');
-const obstacles = [
-    document.getElementById('obstacle-1'),
-    document.getElementById('obstacle-2')
-];
-const livesContainer = document.getElementById('lives-container');
-const gameOverScreen = document.getElementById('game-over-screen');
-const restartButton = document.getElementById('restart-button');
-const menuButton = document.getElementById('menu-button');
+const obstacle = document.getElementById('obstacle');
+const lowObstacle = document.getElementById('low-obstacle');
+const scoreDisplay = document.getElementById('score');
+const livesContainer = document.getElementById('lives');
+const gameOverScreen = document.getElementById('game-over');
+const resetButton = document.getElementById('reset-button');
 
 let isJumping = false;
+let isDucking = false;
+let score = 0;
 let lives = 3;
-const obstacleSpeed = 5; // Geschwindigkeit der Hindernisse
-const obstacleSpacing = 800; // Abstand zwischen Hindernissen
-const startOffset = 1500; // Startposition des ersten Hindernisses
 
 // Spieler springen lassen
 function jump() {
-    if (isJumping) return;
+    if (isJumping || isDucking) return; // Nicht springen, wenn der Spieler duckt
     isJumping = true;
 
     let jumpHeight = 0;
     const jumpInterval = setInterval(() => {
-        if (jumpHeight >= 150) {
+        if (jumpHeight >= 200) {
             clearInterval(jumpInterval);
             const fallInterval = setInterval(() => {
                 if (jumpHeight <= 0) {
@@ -37,37 +34,41 @@ function jump() {
     }, 20);
 }
 
-// Hindernisse bewegen
-function moveObstacles() {
-    obstacles.forEach((obstacle, index) => {
-        let obsLeft = parseInt(window.getComputedStyle(obstacle).getPropertyValue('left')) || 0;
+// Spieler ducken lassen
+function duck() {
+    if (isJumping || isDucking) return; // Nicht ducken, wenn der Spieler springt
+    isDucking = true;
+    player.classList.add('ducking');
 
-        if (obsLeft <= -50) {
-            // Hindernis zurücksetzen, wenn es den Bildschirm verlässt
-            obstacle.style.left = `${startOffset + index * obstacleSpacing}px`;
-        } else {
-            // Hindernis bewegen
-            obstacle.style.left = `${obsLeft - obstacleSpeed}px`;
-        }
-    });
+    setTimeout(() => {
+        player.classList.remove('ducking');
+        isDucking = false;
+    }, 1000); // Ducken dauert 1 Sekunde
 }
 
 // Hindernis-Kollision prüfen
 function checkCollision() {
     const playerRect = player.getBoundingClientRect();
+    const obstacleRect = obstacle.getBoundingClientRect();
+    const lowObstacleRect = lowObstacle.getBoundingClientRect();
 
-    obstacles.forEach(obstacle => {
-        const obstacleRect = obstacle.getBoundingClientRect();
+    if (
+        playerRect.right > obstacleRect.left &&
+        playerRect.left < obstacleRect.right &&
+        playerRect.bottom > obstacleRect.top &&
+        playerRect.top < obstacleRect.bottom
+    ) {
+        loseLife();
+    }
 
-        if (
-            playerRect.right > obstacleRect.left &&
-            playerRect.left < obstacleRect.right &&
-            playerRect.bottom > obstacleRect.top &&
-            playerRect.top < obstacleRect.bottom
-        ) {
-            loseLife();
-        }
-    });
+    if (
+        playerRect.right > lowObstacleRect.left &&
+        playerRect.left < lowObstacleRect.right &&
+        playerRect.bottom > lowObstacleRect.top &&
+        playerRect.top < lowObstacleRect.bottom
+    ) {
+        loseLife();
+    }
 }
 
 // Leben verlieren
@@ -83,33 +84,32 @@ function loseLife() {
 
 // Spiel beenden
 function endGame() {
-    clearInterval(gameLoop);
     gameOverScreen.style.display = 'block';
+    clearInterval(gameLoop);
+}
+
+// Punktzahl erhöhen
+function increaseScore() {
+    score++;
+    scoreDisplay.textContent = `Punkte: ${score}`;
 }
 
 // Spiel zurücksetzen
-restartButton.addEventListener('click', () => {
+resetButton.addEventListener('click', () => {
     location.reload(); // Seite neu laden
 });
 
-// Steuerung für Tastaturspieler
+// Spiel starten
 document.addEventListener('keydown', (e) => {
     if (e.code === 'Space') {
         jump();
+    } else if (e.code === 'ArrowDown') {
+        duck();
     }
 });
 
-// Spiel-Loop
+// Kollision und Punktzahl prüfen
 const gameLoop = setInterval(() => {
-    moveObstacles();
     checkCollision();
-}, 20);
-
-// Hindernisse initialisieren
-function initializeObstacles() {
-    obstacles.forEach((obstacle, index) => {
-        obstacle.style.left = `${startOffset + index * obstacleSpacing}px`; // Startposition weiter rechts
-    });
-}
-
-initializeObstacles();
+    increaseScore();
+}, 100);

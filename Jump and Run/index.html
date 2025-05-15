@@ -7,25 +7,23 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <div id="lives-container">
+    <a href="../index.html" class="back-button">Zurück zum Menü</a>
+    <div id="game-container">
+        <div id="player"></div>
+        <div id="obstacle"></div>
+        <div id="low-obstacle"></div>
+        <div id="score">Punkte: 0</div>
+        <div id="lives">
             <span class="heart">❤️</span>
             <span class="heart">❤️</span>
             <span class="heart">❤️</span>
         </div>
-    </header>
-    <main>
-        <div id="game-container">
-            <div id="player"></div>
-            <div class="obstacle" id="obstacle-1"></div>
-            <div class="obstacle" id="obstacle-2"></div>
-        </div>
-        <div id="game-over-screen" style="display: none;">
+        <div id="game-over" style="display: none;">
             <h1>Game Over</h1>
-            <button id="restart-button">Restart</button>
-            <a href="../index.html" id="menu-button">Zurück zum Menü</a>
+            <button id="reset-button">Spiel neu starten</button>
+            <a href="../index.html" class="menu-button">Zurück zum Menü</a>
         </div>
-    </main>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
