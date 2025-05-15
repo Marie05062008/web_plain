@@ -33,6 +33,7 @@ async function fetchJoke(category, searchTerm) {
 
 // Event-Listener für den Button
 getJokeButton.addEventListener('click', () => {
-    const category = jokeCategory.value;
-    const searchTerm = searchCategory.value.trim();
-    fetchJoke(category, searchTerm);
+    const category = jokeCategory.value; // Kategorie aus Dropdown
+    const searchTerm = searchCategory.value.trim(); // Suchbegriff aus Eingabefeld
+    fetchJoke(category, searchTerm); // API-Aufruf mit Kategorie und Suchbegriff
+});
