@@ -7,17 +7,20 @@ const livesContainer = document.getElementById('lives-container');
 const gameOverScreen = document.getElementById('game-over-screen');
 const restartButton = document.getElementById('restart-button');
 const scoreDisplay = document.getElementById('score-display');
+const jumpButton = document.getElementById('jump-button'); // Springen-Button
+const duckButton = document.getElementById('duck-button'); // Ducken-Button
 
 let isJumping = false;
+let isDucking = false;
 let lives = 3;
 let score = 0;
-const obstacleSpeed = 15; // Erhöhte Geschwindigkeit der Hindernisse
+const obstacleSpeed = 15; // Geschwindigkeit der Hindernisse
 const obstacleSpacing = 800; // Abstand zwischen Hindernissen
 const startOffset = 1500; // Startposition des ersten Hindernisses
 
 // Spieler springen lassen
 function jump() {
-    if (isJumping) return;
+    if (isJumping || isDucking) return;
     isJumping = true;
 
     let jumpHeight = 0;
@@ -36,6 +39,18 @@ function jump() {
         jumpHeight += 10; // Langsameres Springen
         player.style.bottom = `${jumpHeight + 50}px`;
     }, 20);
+}
+
+// Spieler ducken lassen
+function duck() {
+    if (isJumping || isDucking) return;
+    isDucking = true;
+    player.style.height = '25px'; // Spieler duckt sich
+
+    setTimeout(() => {
+        player.style.height = '50px'; // Zurück zur normalen Größe
+        isDucking = false;
+    }, 1000);
 }
 
 // Hindernisse bewegen
@@ -99,8 +114,14 @@ restartButton.addEventListener('click', () => {
 document.addEventListener('keydown', (e) => {
     if (e.code === 'Space') {
         jump();
+    } else if (e.code === 'ArrowDown') {
+        duck();
     }
 });
+
+// Steuerung für Handynutzer
+jumpButton.addEventListener('click', jump);
+duckButton.addEventListener('click', duck);
 
 // Spiel-Loop
 const gameLoop = setInterval(() => {
