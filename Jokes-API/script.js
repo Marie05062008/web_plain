@@ -9,7 +9,7 @@ const userJokesDisplay = document.getElementById('user-jokes-display');
 // Liste, um die IDs der bereits angezeigten Witze zu speichern
 const displayedJokes = new Set();
 
-// Funktion, um einen Witz von der API abzurufen
+// Funktion, um einen Witz von der JokeAPI abzurufen
 async function fetchJoke(category, searchTerm) {
     let url = `https://v2.jokeapi.dev/joke/${category ? category : 'Any'}`;
 
@@ -47,11 +47,32 @@ async function fetchJoke(category, searchTerm) {
     }
 }
 
-// Event-Listener für den Button
+// Funktion, um einen Witz von der Chuck Norris API abzurufen
+async function fetchChuckNorrisJoke() {
+    const url = 'https://api.chucknorris.io/jokes/random';
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        jokeDisplay.innerHTML = `<p>${data.value}</p>`;
+    } catch (error) {
+        jokeDisplay.textContent = 'Fehler beim Abrufen des Chuck Norris Witzes. Bitte versuche es später erneut.';
+    }
+}
+
+// Event-Listener für den Button (JokeAPI)
 getJokeButton.addEventListener('click', () => {
     const category = jokeCategory.value;
     const searchTerm = searchCategory.value.trim();
-    fetchJoke(category, searchTerm);
+
+    if (category === 'ChuckNorris') {
+        // Chuck Norris API aufrufen
+        fetchChuckNorrisJoke();
+    } else {
+        // JokeAPI aufrufen
+        fetchJoke(category, searchTerm);
+    }
 });
 
 // Funktion, um Witze im localStorage zu speichern
