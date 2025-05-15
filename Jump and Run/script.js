@@ -11,7 +11,7 @@ const scoreDisplay = document.getElementById('score-display');
 let isJumping = false;
 let lives = 3;
 let score = 0;
-const obstacleSpeed = 20; // Geschwindigkeit der Hindernisse
+const obstacleSpeed = 60; // Geschwindigkeit der Hindernisse
 const obstacleSpacing = 800; // Abstand zwischen Hindernissen
 const startOffset = 1500; // Startposition des ersten Hindernisses
 
