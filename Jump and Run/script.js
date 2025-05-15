@@ -6,17 +6,18 @@ const obstacles = [
 const livesContainer = document.getElementById('lives-container');
 const gameOverScreen = document.getElementById('game-over-screen');
 const restartButton = document.getElementById('restart-button');
+const scoreDisplay = document.getElementById('score-display');
 
 let isJumping = false;
-let isDucking = false;
 let lives = 3;
+let score = 0;
 const obstacleSpeed = 5; // Geschwindigkeit der Hindernisse
 const obstacleSpacing = 800; // Abstand zwischen Hindernissen
 const startOffset = 1500; // Startposition des ersten Hindernisses
 
 // Spieler springen lassen
 function jump() {
-    if (isJumping || isDucking) return;
+    if (isJumping) return;
     isJumping = true;
 
     let jumpHeight = 0;
@@ -28,25 +29,13 @@ function jump() {
                     clearInterval(fallInterval);
                     isJumping = false;
                 }
-                jumpHeight -= 10;
+                jumpHeight -= 20; // Schnelleres Fallen
                 player.style.bottom = `${jumpHeight + 50}px`;
             }, 20);
         }
-        jumpHeight += 10;
+        jumpHeight += 20; // Schnelleres Springen
         player.style.bottom = `${jumpHeight + 50}px`;
     }, 20);
-}
-
-// Spieler ducken lassen
-function duck() {
-    if (isJumping || isDucking) return;
-    isDucking = true;
-    player.style.height = '25px'; // Spieler duckt sich
-
-    setTimeout(() => {
-        player.style.height = '50px'; // Zurück zur normalen Größe
-        isDucking = false;
-    }, 1000);
 }
 
 // Hindernisse bewegen
@@ -57,6 +46,7 @@ function moveObstacles() {
         if (obsLeft <= -50) {
             // Hindernis zurücksetzen, wenn es den Bildschirm verlässt
             obstacle.style.left = `${startOffset + index * obstacleSpacing}px`;
+            score++; // Punkte erhöhen, wenn ein Hindernis passiert wird
         } else {
             // Hindernis bewegen
             obstacle.style.left = `${obsLeft - obstacleSpeed}px`;
@@ -97,6 +87,7 @@ function loseLife() {
 function endGame() {
     clearInterval(gameLoop);
     gameOverScreen.style.display = 'block';
+    scoreDisplay.textContent = `Punkte: ${score}`;
 }
 
 // Spiel zurücksetzen
@@ -108,8 +99,6 @@ restartButton.addEventListener('click', () => {
 document.addEventListener('keydown', (e) => {
     if (e.code === 'Space') {
         jump();
-    } else if (e.code === 'ArrowDown') {
-        duck();
     }
 });
 
