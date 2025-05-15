@@ -2,6 +2,9 @@
 async function loadCategories() {
     try {
         const response = await fetch('http://localhost:3000/api/categories');
+        if (!response.ok) {
+            throw new Error('Fehler beim Abrufen der Kategorien');
+        }
         const categories = await response.json();
 
         const categorySelect = document.getElementById('joke-category');

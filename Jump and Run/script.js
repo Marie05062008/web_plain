@@ -5,11 +5,14 @@ const scoreDisplay = document.getElementById('score');
 const livesContainer = document.getElementById('lives');
 const gameOverScreen = document.getElementById('game-over');
 const resetButton = document.getElementById('reset-button');
+const jumpButton = document.getElementById('jump-button');
+const duckButton = document.getElementById('duck-button');
 
 let isJumping = false;
 let isDucking = false;
 let score = 0;
 let lives = 3;
+const maxJumpHeight = 150; // Maximale Sprunghöhe
 
 // Spieler springen lassen
 function jump() {
@@ -18,7 +21,7 @@ function jump() {
 
     let jumpHeight = 0;
     const jumpInterval = setInterval(() => {
-        if (jumpHeight >= 200) {
+        if (jumpHeight >= maxJumpHeight) {
             clearInterval(jumpInterval);
             const fallInterval = setInterval(() => {
                 if (jumpHeight <= 0) {
@@ -94,24 +97,21 @@ function increaseScore() {
     scoreDisplay.textContent = `Punkte: ${score}`;
 }
 
+// Hindernisse synchronisieren
+function synchronizeObstacles() {
+    const obstacleSpeed = 3; // Geschwindigkeit in Sekunden
+    obstacle.style.animationDuration = `${obstacleSpeed}s`;
+    lowObstacle.style.animationDuration = `${obstacleSpeed + 1}s`; // Etwas langsamer
+}
+
 // Spiel zurücksetzen
 resetButton.addEventListener('click', () => {
     location.reload(); // Seite neu laden
 });
 
 // Steuerung für Handyspieler
-document.addEventListener('touchstart', (e) => {
-    const touchX = e.touches[0].clientX;
-    const screenWidth = window.innerWidth;
-
-    if (touchX < screenWidth / 2) {
-        // Linke Bildschirmhälfte: Springen
-        jump();
-    } else {
-        // Rechte Bildschirmhälfte: Ducken
-        duck();
-    }
-});
+jumpButton.addEventListener('click', jump);
+duckButton.addEventListener('click', duck);
 
 // Steuerung für Tastaturspieler
 document.addEventListener('keydown', (e) => {
@@ -122,17 +122,11 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// Hindernisse mit genügend Abstand
-function adjustObstacleSpeed() {
-    obstacle.style.animationDuration = '3s'; // Hindernis bewegt sich langsamer
-    lowObstacle.style.animationDuration = '4s'; // Niedriges Hindernis bewegt sich langsamer
-}
-
 // Kollision und Punktzahl prüfen
 const gameLoop = setInterval(() => {
     checkCollision();
     increaseScore();
 }, 100);
 
-// Hindernisgeschwindigkeit anpassen
-adjustObstacleSpeed();
+// Hindernisse synchronisieren
+synchronizeObstacles();
