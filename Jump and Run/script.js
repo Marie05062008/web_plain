@@ -1,8 +1,7 @@
 const player = document.getElementById('player');
 const obstacles = [
     document.getElementById('obstacle-1'),
-    document.getElementById('obstacle-2'),
-    document.getElementById('obstacle-3')
+    document.getElementById('obstacle-2')
 ];
 const livesContainer = document.getElementById('lives-container');
 const gameOverScreen = document.getElementById('game-over-screen');
@@ -12,7 +11,7 @@ const menuButton = document.getElementById('menu-button');
 let isJumping = false;
 let lives = 3;
 const obstacleSpeed = 5; // Geschwindigkeit der Hindernisse
-const obstacleSpacing = 600; // Abstand zwischen Hindernissen
+const obstacleSpacing = 800; // Abstand zwischen Hindernissen
 const startOffset = 1500; // Startposition des ersten Hindernisses
 
 // Spieler springen lassen
