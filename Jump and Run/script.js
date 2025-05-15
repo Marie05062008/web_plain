@@ -131,8 +131,8 @@ function synchronizeObstacles() {
 
     // Hindernisse mit Abstand starten
     obstacle.style.animationDelay = '0s';
-    lowObstacle.style.animationDelay = '1s'; // Startet 1 Sekunde später
-    largeObstacle.style.animationDelay = '2s'; // Startet 2 Sekunden später
+    lowObstacle.style.animationDelay = '1.5s'; // Startet 1.5 Sekunden später
+    largeObstacle.style.animationDelay = '3s'; // Startet 3 Sekunden später
 }
 
 // Spiel zurücksetzen
