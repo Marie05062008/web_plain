@@ -1,35 +1,58 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #f0f0f0; /* Einheitlicher Hintergrund */
     margin: 0;
     padding: 0;
+    color: #333; /* Einheitliche Textfarbe */
 }
 
 .jokes-section {
-    margin: 20px;
+    margin: 20px auto;
     padding: 20px;
-    background-color: #f9f9f9;
+    max-width: 600px; /* Zentrierte und begrenzte Breite */
+    background-color: #ffffff; /* Weißer Hintergrund für Kontrast */
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 10px; /* Abgerundete Ecken */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Leichter Schatten */
     text-align: center;
 }
 
 .jokes-section h2 {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    color: #007bff; /* Einheitliche Akzentfarbe */
 }
 
-.jokes-section select, .jokes-section button, .jokes-section input {
+.jokes-section select,
+.jokes-section button,
+.jokes-section input {
     margin: 10px;
     padding: 10px;
     font-size: 1em;
     border: 1px solid #ccc;
     border-radius: 5px;
+    width: calc(100% - 40px); /* Einheitliche Breite */
+    max-width: 400px; /* Begrenzte Breite */
+    box-sizing: border-box;
+}
+
+.jokes-section button {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.jokes-section button:hover {
+    background-color: #0056b3;
 }
 
 .jokes-section #joke-display {
     margin-top: 20px;
     font-size: 1.2em;
     color: #333;
+    line-height: 1.5;
+    text-align: left; /* Linksbündig für bessere Lesbarkeit */
 }
 
 .back-button {
@@ -56,4 +79,6 @@ body {
     width: calc(100% - 40px);
     border: 1px solid #ccc;
     border-radius: 5px;
+    max-width: 400px; /* Begrenzte Breite */
+    box-sizing: border-box;
 }
