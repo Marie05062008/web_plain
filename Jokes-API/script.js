@@ -9,71 +9,8 @@ const userJokesDisplay = document.getElementById('user-jokes-display');
 // Liste, um die IDs der bereits angezeigten Witze zu speichern
 const displayedJokes = new Set();
 
-// Funktion, um einen Witz von der JokeAPI abzurufen
-async function fetchJoke(category, searchTerm) {
-    let url = `https://v2.jokeapi.dev/joke/${category ? category : 'Any'}`;
-
-    // Sprache auf Deutsch setzen
-    url += `?lang=de`;
-
-    // Wenn ein Suchbegriff eingegeben wurde, füge ihn als Parameter hinzu
-    if (searchTerm) {
-        url += `&contains=${encodeURIComponent(searchTerm)}`;
-    }
-
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (data.error) {
-            jokeDisplay.textContent = 'Kein Witz gefunden. Versuche es erneut!';
-            return;
-        }
-
-        if (displayedJokes.has(data.id)) {
-            fetchJoke(category, searchTerm);
-            return;
-        }
-
-        if (data.type === 'single') {
-            jokeDisplay.textContent = data.joke;
-        } else if (data.type === 'twopart') {
-            jokeDisplay.innerHTML = `<p>${data.setup}</p><p><strong>${data.delivery}</strong></p>`;
-        }
-
-        displayedJokes.add(data.id);
-    } catch (error) {
-        jokeDisplay.textContent = 'Fehler beim Abrufen des Witzes. Bitte versuche es später erneut.';
-    }
-}
-
-// Funktion, um einen Witz von der Chuck Norris API abzurufen
-async function fetchChuckNorrisJoke() {
-    const url = 'https://api.chucknorris.io/jokes/random';
-
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        jokeDisplay.innerHTML = `<p>${data.value}</p>`;
-    } catch (error) {
-        jokeDisplay.textContent = 'Fehler beim Abrufen des Chuck Norris Witzes. Bitte versuche es später erneut.';
-    }
-}
-
-// Event-Listener für den Button (JokeAPI)
-getJokeButton.addEventListener('click', () => {
-    const category = jokeCategory.value;
-    const searchTerm = searchCategory.value.trim();
-
-    if (category === 'ChuckNorris') {
-        // Chuck Norris API aufrufen
-        fetchChuckNorrisJoke();
-    } else {
-        // JokeAPI aufrufen
-        fetchJoke(category, searchTerm);
-    }
-});
+// Objekt, um die Likes/Dislikes der Nutzer zu verfolgen
+const userInteractions = {};
 
 // Funktion, um Witze im localStorage zu speichern
 function saveUserJokes(jokes) {
@@ -105,17 +42,53 @@ function displayUserJokes() {
             <button class="thumbs-up">👍 ${joke.thumbsUp}</button>
             <button class="thumbs-down">👎 ${joke.thumbsDown}</button>
         `;
+
         const thumbsUpButton = jokeItem.querySelector('.thumbs-up');
         const thumbsDownButton = jokeItem.querySelector('.thumbs-down');
 
+        // Initialisiere Interaktionen für den Witz, falls nicht vorhanden
+        if (!userInteractions[index]) {
+            userInteractions[index] = { liked: false, disliked: false };
+        }
+
+        // Event-Listener für Daumen hoch
         thumbsUpButton.addEventListener('click', () => {
-            jokes[index].thumbsUp++;
+            if (userInteractions[index].liked) {
+                // Like entfernen
+                jokes[index].thumbsUp--;
+                userInteractions[index].liked = false;
+            } else {
+                // Like hinzufügen
+                jokes[index].thumbsUp++;
+                userInteractions[index].liked = true;
+
+                // Dislike entfernen, falls vorhanden
+                if (userInteractions[index].disliked) {
+                    jokes[index].thumbsDown--;
+                    userInteractions[index].disliked = false;
+                }
+            }
             saveUserJokes(jokes);
             displayUserJokes();
         });
 
+        // Event-Listener für Daumen runter
         thumbsDownButton.addEventListener('click', () => {
-            jokes[index].thumbsDown++;
+            if (userInteractions[index].disliked) {
+                // Dislike entfernen
+                jokes[index].thumbsDown--;
+                userInteractions[index].disliked = false;
+            } else {
+                // Dislike hinzufügen
+                jokes[index].thumbsDown++;
+                userInteractions[index].disliked = true;
+
+                // Like entfernen, falls vorhanden
+                if (userInteractions[index].liked) {
+                    jokes[index].thumbsUp--;
+                    userInteractions[index].liked = false;
+                }
+            }
             saveUserJokes(jokes);
             displayUserJokes();
         });
