@@ -1,6 +1,7 @@
 const player = document.getElementById('player');
 const obstacle = document.getElementById('obstacle');
 const lowObstacle = document.getElementById('low-obstacle');
+const largeObstacle = document.getElementById('large-obstacle'); // Neues Hindernis
 const scoreDisplay = document.getElementById('score');
 const livesContainer = document.getElementById('lives');
 const gameOverScreen = document.getElementById('game-over');
@@ -10,18 +11,32 @@ const duckButton = document.getElementById('duck-button');
 
 let isJumping = false;
 let isDucking = false;
+let canDoubleJump = false; // Ermöglicht Doppelsprung
 let score = 0;
 let lives = 3;
 const maxJumpHeight = 150; // Maximale Sprunghöhe
+const doubleJumpHeight = 250; // Maximale Höhe für Doppelsprung
 
 // Spieler springen lassen
 function jump() {
-    if (isJumping || isDucking) return; // Nicht springen, wenn der Spieler duckt
-    isJumping = true;
+    if (isDucking) return; // Nicht springen, wenn der Spieler duckt
 
+    if (isJumping && canDoubleJump) {
+        // Doppelsprung
+        canDoubleJump = false;
+        performJump(doubleJumpHeight);
+    } else if (!isJumping) {
+        // Erster Sprung
+        isJumping = true;
+        canDoubleJump = true;
+        performJump(maxJumpHeight);
+    }
+}
+
+function performJump(height) {
     let jumpHeight = 0;
     const jumpInterval = setInterval(() => {
-        if (jumpHeight >= maxJumpHeight) {
+        if (jumpHeight >= height) {
             clearInterval(jumpInterval);
             const fallInterval = setInterval(() => {
                 if (jumpHeight <= 0) {
@@ -54,6 +69,7 @@ function checkCollision() {
     const playerRect = player.getBoundingClientRect();
     const obstacleRect = obstacle.getBoundingClientRect();
     const lowObstacleRect = lowObstacle.getBoundingClientRect();
+    const largeObstacleRect = largeObstacle.getBoundingClientRect();
 
     if (
         playerRect.right > obstacleRect.left &&
@@ -69,6 +85,15 @@ function checkCollision() {
         playerRect.left < lowObstacleRect.right &&
         playerRect.bottom > lowObstacleRect.top &&
         playerRect.top < lowObstacleRect.bottom
+    ) {
+        loseLife();
+    }
+
+    if (
+        playerRect.right > largeObstacleRect.left &&
+        playerRect.left < largeObstacleRect.right &&
+        playerRect.bottom > largeObstacleRect.top &&
+        playerRect.top < largeObstacleRect.bottom
     ) {
         loseLife();
     }
@@ -101,7 +126,8 @@ function increaseScore() {
 function synchronizeObstacles() {
     const obstacleSpeed = 3; // Geschwindigkeit in Sekunden
     obstacle.style.animationDuration = `${obstacleSpeed}s`;
-    lowObstacle.style.animationDuration = `${obstacleSpeed + 1}s`; // Etwas langsamer
+    lowObstacle.style.animationDuration = `${obstacleSpeed}s`; // Gleiche Geschwindigkeit
+    largeObstacle.style.animationDuration = `${obstacleSpeed}s`; // Gleiche Geschwindigkeit
 }
 
 // Spiel zurücksetzen
