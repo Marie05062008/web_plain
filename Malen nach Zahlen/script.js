@@ -29,6 +29,8 @@ function loadImageAsMotif(imageUrl) {
     const img = new Image();
     img.crossOrigin = 'Anonymous'; // Für CORS-freie Bilder
     img.onload = () => {
+        console.log('Bild erfolgreich geladen:', imageUrl);
+
         const cellSize = 1; // 1x1 Pixel-Auflösung
         const scaleFactor = 5; // Vergrößerungsfaktor für bessere Sichtbarkeit
         hiddenCanvas.width = img.width;
@@ -77,6 +79,7 @@ function loadImageAsMotif(imageUrl) {
     };
 
     img.onerror = () => {
+        console.error('Fehler beim Laden des Bildes:', imageUrl);
         alert('Das Bild konnte nicht geladen werden. Bitte überprüfe die URL.');
     };
 
