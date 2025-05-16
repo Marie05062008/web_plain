@@ -31,21 +31,8 @@ function loadImageAsMotif(imageUrl) {
     img.onload = () => {
         console.log('Bild erfolgreich geladen:', imageUrl);
 
-        const maxWidth = 100; // Maximale Breite des Bildes
-        const maxHeight = 100; // Maximale Höhe des Bildes
+        // Bildgröße verwenden
         const scaleFactor = 5; // Vergrößerungsfaktor für die Darstellung
-
-        // Bildgröße anpassen
-        const aspectRatio = img.width / img.height;
-        if (img.width > maxWidth || img.height > maxHeight) {
-            if (aspectRatio > 1) {
-                img.width = maxWidth;
-                img.height = maxWidth / aspectRatio;
-            } else {
-                img.height = maxHeight;
-                img.width = maxHeight * aspectRatio;
-            }
-        }
 
         hiddenCanvas.width = img.width;
         hiddenCanvas.height = img.height;
@@ -61,9 +48,30 @@ function loadImageAsMotif(imageUrl) {
         canvas.innerHTML = ''; // Canvas leeren
         canvas.style.display = 'grid';
         canvas.style.gridTemplateColumns = `repeat(${width}, ${scaleFactor}px)`;
+        canvas.style.gridTemplateRows = `repeat(${height}, ${scaleFactor}px)`; // Höhe hinzufügen
 
-        // Verarbeitung in Blöcken (z. B. 5x5 Pixel)
-        processImageInChunks(data, width, height, scaleFactor, 5);
+        // Verarbeitung in Blöcken (1x1 Pixel für genaue Darstellung)
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                const index = (y * width + x) * 4;
+                const r = data[index];
+                const g = data[index + 1];
+                const b = data[index + 2];
+                const color = `rgb(${r}, ${g}, ${b})`;
+
+                const cellElement = document.createElement('div');
+                cellElement.className = 'cell';
+                cellElement.style.width = `${scaleFactor}px`;
+                cellElement.style.height = `${scaleFactor}px`;
+                cellElement.style.backgroundColor = color;
+
+                cellElement.addEventListener('click', () => {
+                    cellElement.style.backgroundColor = selectedColor;
+                });
+
+                canvas.appendChild(cellElement);
+            }
+        }
     };
 
     img.onerror = () => {

@@ -65,12 +65,14 @@ a.back-button {
 
 #canvas {
     display: grid;
-    gap: 1px;
+    gap: 0; /* Kein Abstand zwischen den Zellen */
     margin-top: 20px;
+    justify-content: center; /* Zentriere das Raster */
+    align-items: center;
 }
 
 .cell {
-    border: 1px solid #ccc;
+    border: none; /* Entferne die Ränder für eine nahtlose Darstellung */
     cursor: pointer;
 }
 
