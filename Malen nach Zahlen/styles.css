@@ -33,6 +33,7 @@ a.back-button {
 #color-palette {
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 .color {
@@ -49,16 +50,11 @@ a.back-button {
 
 #canvas {
     display: grid;
-    grid-template-columns: repeat(10, 30px);
-    gap: 2px;
-    justify-content: center;
-    margin-top: 10px;
+    gap: 1px;
+    margin-top: 20px;
 }
 
 .cell {
-    width: 30px;
-    height: 30px;
-    background-color: white;
     border: 1px solid #ccc;
     cursor: pointer;
 }

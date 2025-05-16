@@ -1,8 +1,9 @@
-const motifSelect = document.getElementById('motif-select');
-const loadMotifButton = document.getElementById('load-motif');
+const imageUrlInput = document.getElementById('image-url');
+const loadImageButton = document.getElementById('load-image');
+const hiddenCanvas = document.getElementById('hidden-canvas');
+const hiddenCtx = hiddenCanvas.getContext('2d');
 const canvas = document.getElementById('canvas');
 const colorPalette = document.getElementById('color-palette');
-const backButton = document.querySelector('.back-button'); // Zurück-Button
 
 let selectedColor = 'black'; // Standardfarbe
 
@@ -14,89 +15,100 @@ colorPalette.addEventListener('click', (e) => {
     }
 });
 
-// Event-Listener für das Laden eines Motivs
-loadMotifButton.addEventListener('click', () => {
-    const motif = motifSelect.value;
-    loadMotif(motif);
+// Event-Listener für das Laden eines Bildes
+loadImageButton.addEventListener('click', () => {
+    const imageUrl = imageUrlInput.value;
+    if (!imageUrl) {
+        alert('Bitte füge eine gültige Bild-URL ein.');
+        return;
+    }
+    loadImageAsMotif(imageUrl);
 });
 
-// Event-Listener für den Zurück-Button
-if (backButton) {
-    backButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (document.referrer) {
-            // Zur vorherigen Seite zurückkehren
-            window.history.back();
-        } else {
-            // Standardseite laden, falls keine vorherige Seite existiert
-            window.location.href = 'index.html';
+function loadImageAsMotif(imageUrl) {
+    const img = new Image();
+    img.crossOrigin = 'Anonymous'; // Für CORS-freie Bilder
+    img.onload = () => {
+        const cellSize = 10; // Größe jeder Zelle im Raster
+        hiddenCanvas.width = img.width;
+        hiddenCanvas.height = img.height;
+        hiddenCtx.drawImage(img, 0, 0);
+
+        const imageData = hiddenCtx.getImageData(0, 0, img.width, img.height);
+        const { data, width, height } = imageData;
+
+        // Farben analysieren und zur Palette hinzufügen
+        const colors = extractColors(data);
+        updateColorPalette(colors);
+
+        canvas.innerHTML = ''; // Canvas leeren
+        canvas.style.display = 'grid';
+        canvas.style.gridTemplateColumns = `repeat(${Math.floor(width / cellSize)}, ${cellSize}px)`;
+
+        for (let y = 0; y < height; y += cellSize) {
+            for (let x = 0; x < width; x += cellSize) {
+                const index = (y * width + x) * 4;
+                const r = data[index];
+                const g = data[index + 1];
+                const b = data[index + 2];
+
+                const cellElement = document.createElement('div');
+                cellElement.className = 'cell';
+                cellElement.style.width = `${cellSize}px`;
+                cellElement.style.height = `${cellSize}px`;
+                cellElement.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+
+                cellElement.addEventListener('click', () => {
+                    cellElement.style.backgroundColor = selectedColor;
+                });
+
+                canvas.appendChild(cellElement);
+            }
         }
-    });
+    };
+
+    img.onerror = () => {
+        alert('Das Bild konnte nicht geladen werden. Bitte überprüfe die URL.');
+    };
+
+    img.src = imageUrl;
 }
 
-// Funktion, um ein Motiv zu laden
-function loadMotif(motif) {
-    canvas.innerHTML = ''; // Canvas leeren
+// Funktion, um die häufigsten Farben aus den Bilddaten zu extrahieren
+function extractColors(data) {
+    const colorMap = new Map();
 
-    let motifData;
-    if (motif === 'flower') {
-        motifData = [
-            [0, 0, 1, 1, 1, 1, 1, 0, 0, 0],
-            [0, 1, 0, 0, 0, 0, 0, 1, 0, 0],
-            [1, 0, 2, 2, 2, 2, 2, 0, 1, 0],
-            [1, 0, 2, 0, 0, 0, 2, 0, 1, 0],
-            [1, 0, 2, 0, 0, 0, 2, 0, 1, 0],
-            [1, 0, 2, 2, 2, 2, 2, 0, 1, 0],
-            [0, 1, 0, 0, 0, 0, 0, 1, 0, 0],
-            [0, 0, 1, 1, 1, 1, 1, 0, 0, 0],
-        ];
-    } else if (motif === 'house') {
-        motifData = [
-            [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
-            [0, 0, 0, 1, 2, 2, 1, 0, 0, 0],
-            [0, 0, 1, 2, 2, 2, 2, 1, 0, 0],
-            [0, 1, 2, 2, 2, 2, 2, 2, 1, 0],
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-            [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
-            [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
-            [0, 0, 0, 1, 1, 1, 1, 0, 0, 0],
-        ];
-    } else if (motif === 'tree') {
-        motifData = [
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 1, 2, 1, 0, 0, 0, 0],
-            [0, 0, 1, 2, 2, 2, 1, 0, 0, 0],
-            [0, 1, 2, 2, 2, 2, 2, 1, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-        ];
-    } else if (motif === 'heart') {
-        motifData = [
-            [0, 0, 1, 1, 0, 0, 1, 1, 0, 0],
-            [0, 1, 2, 2, 1, 1, 2, 2, 1, 0],
-            [1, 2, 2, 2, 2, 2, 2, 2, 2, 1],
-            [1, 2, 2, 2, 2, 2, 2, 2, 2, 1],
-            [0, 1, 2, 2, 2, 2, 2, 2, 1, 0],
-            [0, 0, 1, 2, 2, 2, 2, 1, 0, 0],
-            [0, 0, 0, 1, 2, 2, 1, 0, 0, 0],
-            [0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
-        ];
+    for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        const color = `rgb(${r}, ${g}, ${b})`;
+
+        if (colorMap.has(color)) {
+            colorMap.set(color, colorMap.get(color) + 1);
+        } else {
+            colorMap.set(color, 1);
+        }
     }
 
-    // Canvas mit dem Motiv füllen
-    motifData.forEach((row) => {
-        row.forEach((cell) => {
-            const cellElement = document.createElement('div');
-            cellElement.className = 'cell';
-            cellElement.style.backgroundColor = cell === 1 ? 'gray' : 'white';
-            cellElement.addEventListener('click', () => {
-                if (cell === 0) {
-                    cellElement.style.backgroundColor = selectedColor;
-                }
-            });
-            canvas.appendChild(cellElement);
-        });
+    // Sortiere die Farben nach Häufigkeit und gib die Top 10 zurück
+    return [...colorMap.entries()]
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 10)
+        .map(([color]) => color);
+}
+
+// Funktion, um die Farbpalette zu aktualisieren
+function updateColorPalette(colors) {
+    colorPalette.innerHTML = ''; // Palette leeren
+
+    colors.forEach((color) => {
+        const colorButton = document.createElement('button');
+        colorButton.className = 'color';
+        colorButton.style.backgroundColor = color;
+        colorButton.dataset.color = color;
+        colorPalette.appendChild(colorButton);
     });
+
+    console.log('Aktualisierte Farbpalette:', colors);
 }
