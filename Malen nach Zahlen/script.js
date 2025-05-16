@@ -17,7 +17,7 @@ colorPalette.addEventListener('click', (e) => {
 
 // Event-Listener für das Laden eines Bildes
 loadImageButton.addEventListener('click', () => {
-    const imageUrl = imageUrlInput.value;
+    const imageUrl = imageUrlInput.value.trim();
     if (!imageUrl) {
         alert('Bitte füge eine gültige Bild-URL ein.');
         return;
@@ -31,11 +31,25 @@ function loadImageAsMotif(imageUrl) {
     img.onload = () => {
         console.log('Bild erfolgreich geladen:', imageUrl);
 
-        const cellSize = 1; // 1x1 Pixel-Auflösung
-        const scaleFactor = 5; // Vergrößerungsfaktor für bessere Sichtbarkeit
+        const maxWidth = 100; // Maximale Breite des Bildes
+        const maxHeight = 100; // Maximale Höhe des Bildes
+        const scaleFactor = 5; // Vergrößerungsfaktor für die Darstellung
+
+        // Bildgröße anpassen
+        const aspectRatio = img.width / img.height;
+        if (img.width > maxWidth || img.height > maxHeight) {
+            if (aspectRatio > 1) {
+                img.width = maxWidth;
+                img.height = maxWidth / aspectRatio;
+            } else {
+                img.height = maxHeight;
+                img.width = maxHeight * aspectRatio;
+            }
+        }
+
         hiddenCanvas.width = img.width;
         hiddenCanvas.height = img.height;
-        hiddenCtx.drawImage(img, 0, 0);
+        hiddenCtx.drawImage(img, 0, 0, img.width, img.height);
 
         const imageData = hiddenCtx.getImageData(0, 0, img.width, img.height);
         const { data, width, height } = imageData;
@@ -46,28 +60,19 @@ function loadImageAsMotif(imageUrl) {
 
         canvas.innerHTML = ''; // Canvas leeren
         canvas.style.display = 'grid';
-        canvas.style.gridTemplateColumns = `repeat(${width}, ${cellSize * scaleFactor}px)`;
+        canvas.style.gridTemplateColumns = `repeat(${width}, ${scaleFactor}px)`;
 
-        for (let y = 0; y < height; y++) {
-            for (let x = 0; x < width; x++) {
-                const index = (y * width + x) * 4;
-                const r = data[index];
-                const g = data[index + 1];
-                const b = data[index + 2];
-                const pixelColor = `rgb(${r}, ${g}, ${b})`;
+        // Verarbeitung in Blöcken (z. B. 5x5 Pixel)
+        const blockSize = 5;
+        for (let y = 0; y < height; y += blockSize) {
+            for (let x = 0; x < width; x += blockSize) {
+                const color = getAverageColor(data, width, x, y, blockSize);
 
                 const cellElement = document.createElement('div');
                 cellElement.className = 'cell';
-                cellElement.style.width = `${cellSize * scaleFactor}px`;
-                cellElement.style.height = `${cellSize * scaleFactor}px`;
-
-                // Überprüfen, ob die Farbe mit einer aus der Palette übereinstimmt
-                const matchingColor = findMatchingColor(pixelColor);
-                if (matchingColor) {
-                    cellElement.style.backgroundColor = matchingColor;
-                } else {
-                    cellElement.style.backgroundColor = 'white'; // Standardfarbe für nicht erkannte Farben
-                }
+                cellElement.style.width = `${scaleFactor}px`;
+                cellElement.style.height = `${scaleFactor}px`;
+                cellElement.style.backgroundColor = color;
 
                 cellElement.addEventListener('click', () => {
                     cellElement.style.backgroundColor = selectedColor;
@@ -86,6 +91,27 @@ function loadImageAsMotif(imageUrl) {
     img.src = imageUrl;
 }
 
+// Funktion, um die Durchschnittsfarbe eines Blocks zu berechnen
+function getAverageColor(data, width, startX, startY, blockSize) {
+    let r = 0, g = 0, b = 0, count = 0;
+
+    for (let y = startY; y < startY + blockSize; y++) {
+        for (let x = startX; x < startX + blockSize; x++) {
+            const index = (y * width + x) * 4;
+            r += data[index];
+            g += data[index + 1];
+            b += data[index + 2];
+            count++;
+        }
+    }
+
+    r = Math.floor(r / count);
+    g = Math.floor(g / count);
+    b = Math.floor(b / count);
+
+    return `rgb(${r}, ${g}, ${b})`;
+}
+
 // Funktion, um alle Farben aus den Bilddaten zu extrahieren
 function extractColors(data) {
     const colorMap = new Map();
@@ -101,7 +127,7 @@ function extractColors(data) {
         }
     }
 
-    // Gib alle Farben zurück
+    // Gib die häufigsten Farben zurück
     return [...colorMap.keys()];
 }
 
@@ -118,12 +144,4 @@ function updateColorPalette(colors) {
     });
 
     console.log('Aktualisierte Farbpalette:', colors);
-}
-
-// Funktion, um eine passende Farbe aus der Palette zu finden
-function findMatchingColor(pixelColor) {
-    const paletteColors = Array.from(colorPalette.children).map(
-        (button) => button.dataset.color
-    );
-    return paletteColors.find((color) => color === pixelColor) || null;
 }
