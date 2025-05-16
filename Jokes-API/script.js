@@ -134,6 +134,7 @@ async function fetchJoke(category, searchTerm) {
 // Funktion, um einen Witz von der Chuck Norris API abzurufen
 async function fetchChuckNorrisJoke() {
     const url = 'https://api.chucknorris.io/jokes/random';
+    url += `?lang=de`; // Sprache auf Deutsch setzen
 
     console.log('Chuck Norris API-URL:', url); // Debugging-Log
 
