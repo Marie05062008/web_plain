@@ -1,4 +1,4 @@
-const imageSelect = document.getElementById('image-select');
+const imageUrlInput = document.getElementById('image-url');
 const loadImageButton = document.getElementById('load-image');
 const hiddenCanvas = document.getElementById('hidden-canvas');
 const hiddenCtx = hiddenCanvas.getContext('2d');
@@ -17,8 +17,11 @@ colorPalette.addEventListener('click', (e) => {
 
 // Event-Listener für das Laden eines Bildes
 loadImageButton.addEventListener('click', () => {
-    const imageName = imageSelect.value;
-    const imageUrl = `images/${imageName}`;
+    const imageUrl = imageUrlInput.value;
+    if (!imageUrl) {
+        alert('Bitte füge eine gültige Bild-URL ein.');
+        return;
+    }
     loadImageAsMotif(imageUrl);
 });
 
@@ -49,12 +52,20 @@ function loadImageAsMotif(imageUrl) {
                 const r = data[index];
                 const g = data[index + 1];
                 const b = data[index + 2];
+                const pixelColor = `rgb(${r}, ${g}, ${b})`;
 
                 const cellElement = document.createElement('div');
                 cellElement.className = 'cell';
                 cellElement.style.width = `${cellSize * scaleFactor}px`;
                 cellElement.style.height = `${cellSize * scaleFactor}px`;
-                cellElement.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+
+                // Überprüfen, ob die Farbe mit einer aus der Palette übereinstimmt
+                const matchingColor = findMatchingColor(pixelColor);
+                if (matchingColor) {
+                    cellElement.style.backgroundColor = matchingColor;
+                } else {
+                    cellElement.style.backgroundColor = 'white'; // Standardfarbe für nicht erkannte Farben
+                }
 
                 cellElement.addEventListener('click', () => {
                     cellElement.style.backgroundColor = selectedColor;
@@ -104,4 +115,12 @@ function updateColorPalette(colors) {
     });
 
     console.log('Aktualisierte Farbpalette:', colors);
+}
+
+// Funktion, um eine passende Farbe aus der Palette zu finden
+function findMatchingColor(pixelColor) {
+    const paletteColors = Array.from(colorPalette.children).map(
+        (button) => button.dataset.color
+    );
+    return paletteColors.find((color) => color === pixelColor) || null;
 }
