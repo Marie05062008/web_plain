@@ -5,6 +5,7 @@ const jokeDisplay = document.getElementById('joke-display');
 const userJokeInput = document.getElementById('user-joke');
 const addJokeButton = document.getElementById('add-joke');
 const userJokesDisplay = document.getElementById('user-jokes-display');
+const backButton = document.querySelector('.back-button');
 
 // Liste, um die IDs der bereits angezeigten Witze zu speichern
 const displayedJokes = new Set();
@@ -19,7 +20,9 @@ function saveUserJokes(jokes) {
 
 // Funktion, um Witze aus dem localStorage zu laden
 function loadUserJokes() {
-    return JSON.parse(localStorage.getItem('userJokes')) || [];
+    const jokes = JSON.parse(localStorage.getItem('userJokes')) || [];
+    console.log('Geladene Witze:', jokes); // Debugging-Log
+    return jokes;
 }
 
 // Funktion, um einen neuen Witz hinzuzufügen
@@ -30,7 +33,6 @@ function addUserJoke(jokeText) {
     displayUserJokes();
 }
 
-// Funktion, um Witze anzuzeigen
 function displayUserJokes() {
     const jokes = loadUserJokes();
     userJokesDisplay.innerHTML = '';
@@ -41,10 +43,12 @@ function displayUserJokes() {
             <p>${joke.text}</p>
             <button class="thumbs-up">👍 ${joke.thumbsUp}</button>
             <button class="thumbs-down">👎 ${joke.thumbsDown}</button>
+            ${joke.createdByUser ? '<button class="delete-joke">🗑️ Löschen</button>' : ''}
         `;
 
         const thumbsUpButton = jokeItem.querySelector('.thumbs-up');
         const thumbsDownButton = jokeItem.querySelector('.thumbs-down');
+        const deleteButton = jokeItem.querySelector('.delete-joke');
 
         // Initialisiere Interaktionen für den Witz, falls nicht vorhanden
         if (!userInteractions[index]) {
@@ -54,15 +58,12 @@ function displayUserJokes() {
         // Event-Listener für Daumen hoch
         thumbsUpButton.addEventListener('click', () => {
             if (userInteractions[index].liked) {
-                // Like entfernen
                 jokes[index].thumbsUp--;
                 userInteractions[index].liked = false;
             } else {
-                // Like hinzufügen
                 jokes[index].thumbsUp++;
                 userInteractions[index].liked = true;
 
-                // Dislike entfernen, falls vorhanden
                 if (userInteractions[index].disliked) {
                     jokes[index].thumbsDown--;
                     userInteractions[index].disliked = false;
@@ -75,15 +76,12 @@ function displayUserJokes() {
         // Event-Listener für Daumen runter
         thumbsDownButton.addEventListener('click', () => {
             if (userInteractions[index].disliked) {
-                // Dislike entfernen
                 jokes[index].thumbsDown--;
                 userInteractions[index].disliked = false;
             } else {
-                // Dislike hinzufügen
                 jokes[index].thumbsDown++;
                 userInteractions[index].disliked = true;
 
-                // Like entfernen, falls vorhanden
                 if (userInteractions[index].liked) {
                     jokes[index].thumbsUp--;
                     userInteractions[index].liked = false;
@@ -92,6 +90,15 @@ function displayUserJokes() {
             saveUserJokes(jokes);
             displayUserJokes();
         });
+
+        // Event-Listener für Löschen
+        if (deleteButton) {
+            deleteButton.addEventListener('click', () => {
+                jokes.splice(index, 1); // Entferne den Witz aus dem Array
+                saveUserJokes(jokes);
+                displayUserJokes();
+            });
+        }
 
         userJokesDisplay.appendChild(jokeItem);
     });
@@ -106,5 +113,14 @@ addJokeButton.addEventListener('click', () => {
     }
 });
 
+// Event-Listener für den "Zurück"-Button
+if (backButton) {
+    backButton.addEventListener('click', (e) => {
+        e.preventDefault(); // Verhindert das Standardverhalten
+        history.back(); // Navigiert zur vorherigen Seite
+    });
+}
+
 // Lade die Witze beim Start
+console.log('Lade Witze beim Start...');
 displayUserJokes();
