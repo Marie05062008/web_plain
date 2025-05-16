@@ -10,36 +10,26 @@
     <a href="#" class="back-button">Zurück</a>
     <section class="game-section">
         <h2>Malen nach Zahlen</h2>
-        <canvas id="hidden-canvas" style="display: none;"></canvas>
-        <div id="canvas"></div>
-        <div id="color-palette"></div>
 
-        <div class="palette">
-            <h3>Farbauswahl</h3>
-            <div id="color-palette">
-                <button class="color" style="background-color: red;" data-color="red"></button>
-                <button class="color" style="background-color: blue;" data-color="blue"></button>
-                <button class="color" style="background-color: green;" data-color="green"></button>
-                <button class="color" style="background-color: yellow;" data-color="yellow"></button>
-                <button class="color" style="background-color: black;" data-color="black"></button>
-                <button class="color" style="background-color: purple;" data-color="red"></button>
-                <button class="color" style="background-color: magenta;" data-color="blue"></button>
-                <button class="color" style="background-color: cyan;" data-color="green"></button>
-                <button class="color" style="background-color: turquoise;" data-color="yellow"></button>
-                <button class="color" style="background-color: rgb(114, 192, 140);" data-color="black"></button>
-            </div>
-        </div>
-        <div id="canvas-container">
-            <h3>Motiv</h3>
-            <div id="canvas"></div>
-        </div>
-        <div>
+        <!-- Eingabefeld für Bild-URL -->
+        <div class="controls">
             <label for="image-url">Bild-URL:</label>
             <input type="text" id="image-url" placeholder="Füge die URL eines Bildes ein" />
             <button id="load-image">Bild laden</button>
         </div>
-        <canvas id="hidden-canvas" style="display: none;"></canvas>
-        <div id="canvas"></div>
+
+        <!-- Container für das Motiv und die Farbpalette -->
+        <div class="main-container">
+            <div id="canvas-container">
+                <h3>Motiv</h3>
+                <canvas id="hidden-canvas" style="display: none;"></canvas>
+                <div id="canvas"></div>
+            </div>
+            <div class="palette">
+                <h3>Farbauswahl</h3>
+                <div id="color-palette"></div>
+            </div>
+        </div>
     </section>
     <script src="script.js"></script>
 </body>
