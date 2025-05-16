@@ -140,3 +140,17 @@ body {
     background-color: #dc3545;
     color: white;
 }
+
+.delete-joke {
+    display: inline-block;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-joke:hover {
+    background-color: #c82333;
+}
