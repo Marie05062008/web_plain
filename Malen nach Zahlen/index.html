@@ -10,15 +10,19 @@
     <a href="#" class="back-button">Zurück</a>
     <section class="game-section">
         <h2>Malen nach Zahlen</h2>
-        <div class="controls">
-            <label for="motif-select">Wähle ein Motiv:</label>
-            <select id="motif-select">
-                <option value="flower">Blume</option>
-                <option value="house">Haus</option>
-                <option value="tree">Baum</option>
+        <div>
+            <label for="image-select">Wähle ein Bild:</label>
+            <select id="image-select">
+                <option value="image1.jpg">Bild 1</option>
+                <option value="image2.jpg">Bild 2</option>
+                <option value="image3.jpg">Bild 3</option>
             </select>
-            <button id="load-motif">Motiv laden</button>
+             <button id="load-image">Bild laden</button>
         </div>
+        <canvas id="hidden-canvas" style="display: none;"></canvas>
+        <div id="canvas"></div>
+        <div id="color-palette"></div>
+
         <div class="palette">
             <h3>Farbauswahl</h3>
             <div id="color-palette">
@@ -27,6 +31,11 @@
                 <button class="color" style="background-color: green;" data-color="green"></button>
                 <button class="color" style="background-color: yellow;" data-color="yellow"></button>
                 <button class="color" style="background-color: black;" data-color="black"></button>
+                <button class="color" style="background-color: purple;" data-color="red"></button>
+                <button class="color" style="background-color: magenta;" data-color="blue"></button>
+                <button class="color" style="background-color: cyan;" data-color="green"></button>
+                <button class="color" style="background-color: turquoise;" data-color="yellow"></button>
+                <button class="color" style="background-color: rgb(114, 192, 140);" data-color="black"></button>
             </div>
         </div>
         <div id="canvas-container">

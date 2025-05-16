@@ -58,3 +58,18 @@ a.back-button {
     border: 1px solid #ccc;
     cursor: pointer;
 }
+
+#color-palette {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.color {
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}

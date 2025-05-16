@@ -1,4 +1,4 @@
-const imageUrlInput = document.getElementById('image-url');
+const imageSelect = document.getElementById('image-select');
 const loadImageButton = document.getElementById('load-image');
 const hiddenCanvas = document.getElementById('hidden-canvas');
 const hiddenCtx = hiddenCanvas.getContext('2d');
@@ -17,11 +17,8 @@ colorPalette.addEventListener('click', (e) => {
 
 // Event-Listener für das Laden eines Bildes
 loadImageButton.addEventListener('click', () => {
-    const imageUrl = imageUrlInput.value;
-    if (!imageUrl) {
-        alert('Bitte füge eine gültige Bild-URL ein.');
-        return;
-    }
+    const imageName = imageSelect.value;
+    const imageUrl = `images/${imageName}`;
     loadImageAsMotif(imageUrl);
 });
 
@@ -29,7 +26,7 @@ function loadImageAsMotif(imageUrl) {
     const img = new Image();
     img.crossOrigin = 'Anonymous'; // Für CORS-freie Bilder
     img.onload = () => {
-        const cellSize = 10; // Größe jeder Zelle im Raster
+        const cellSize = 5; // Kleinere Zellen für mehr Details
         hiddenCanvas.width = img.width;
         hiddenCanvas.height = img.height;
         hiddenCtx.drawImage(img, 0, 0);
