@@ -159,7 +159,6 @@ async function fetchChuckNorrisJoke() {
          // Übersetze den Witz ins Deutsche
         const translatedJoke = await translateToGerman(data.value);
         jokeDisplay.innerHTML = `<p>${translatedJoke}</p>`;
-
     } catch (error) {
         console.error('Fehler beim Abrufen des Chuck Norris Witzes:', error); // Debugging-Log
         jokeDisplay.textContent = 'Fehler beim Abrufen des Witzes. Bitte versuche es später erneut.';
