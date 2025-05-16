@@ -10,11 +10,14 @@ const backButton = document.querySelector('.back-button');
 // Funktion, um Witze im localStorage zu speichern
 function saveUserJokes(jokes) {
     localStorage.setItem('userJokes', JSON.stringify(jokes));
+    console.log('Witze gespeichert:', jokes); // Debugging-Log
 }
 
 // Funktion, um Witze aus dem localStorage zu laden
 function loadUserJokes() {
-    return JSON.parse(localStorage.getItem('userJokes')) || [];
+    const jokes = JSON.parse(localStorage.getItem('userJokes')) || [];
+    console.log('Geladene Witze:', jokes); // Debugging-Log
+    return jokes;
 }
 
 // Funktion, um einen neuen Witz hinzuzufügen
@@ -31,6 +34,7 @@ function displayUserJokes() {
     const jokes = loadUserJokes();
     userJokesDisplay.innerHTML = '';
     jokes.forEach((joke, index) => {
+        console.log('Witz anzeigen:', joke); // Debugging-Log
         const jokeItem = document.createElement('div');
         jokeItem.className = 'joke-item';
         jokeItem.innerHTML = `
@@ -57,7 +61,7 @@ function displayUserJokes() {
     });
 }
 
-// Funktion, um einen Witz von der API abzurufen
+// Funktion, um einen Witz von der JokeAPI abzurufen
 async function fetchJoke(category, searchTerm) {
     let url = `https://v2.jokeapi.dev/joke/${category ? category : 'Any'}`;
     url += `?lang=de`; // Sprache auf Deutsch setzen
@@ -89,12 +93,35 @@ async function fetchJoke(category, searchTerm) {
     }
 }
 
+// Funktion, um einen Witz von der Chuck Norris API abzurufen
+async function fetchChuckNorrisJoke() {
+    const url = 'https://api.chucknorris.io/jokes/random';
+
+    console.log('Chuck Norris API-URL:', url); // Debugging-Log
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        console.log('Chuck Norris API-Antwort:', data); // Debugging-Log
+
+        jokeDisplay.innerHTML = `<p>${data.value}</p>`;
+    } catch (error) {
+        console.error('Fehler beim Abrufen des Chuck Norris Witzes:', error); // Debugging-Log
+        jokeDisplay.textContent = 'Fehler beim Abrufen des Witzes. Bitte versuche es später erneut.';
+    }
+}
+
 // Event-Listener für den "Erzähl mir einen Witz"-Button
 getJokeButton.addEventListener('click', () => {
     const category = jokeCategory.value; // Kategorie aus Dropdown
     const searchTerm = searchCategory.value.trim(); // Suchbegriff aus Eingabefeld
     console.log('Kategorie:', category, 'Suchbegriff:', searchTerm); // Debugging-Log
-    fetchJoke(category, searchTerm); // API-Aufruf
+
+    if (category === 'ChuckNorris') {
+        fetchChuckNorrisJoke(); // Chuck Norris API aufrufen
+    } else {
+        fetchJoke(category, searchTerm); // JokeAPI aufrufen
+    }
 });
 
 // Event-Listener für den "Zurück"-Button
