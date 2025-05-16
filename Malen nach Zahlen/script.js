@@ -31,9 +31,23 @@ function loadImageAsMotif(imageUrl) {
     img.onload = () => {
         console.log('Bild erfolgreich geladen:', imageUrl);
 
-        // Bildgröße verwenden
-        const scaleFactor = 5; // Vergrößerungsfaktor für die Darstellung
+        // Maximale Bildgröße für schnellere Verarbeitung
+        const maxWidth = 300; // Maximale Breite des Bildes
+        const maxHeight = 300; // Maximale Höhe des Bildes
 
+        // Bildgröße anpassen, falls es größer als die maximale Größe ist
+        const aspectRatio = img.width / img.height;
+        if (img.width > maxWidth || img.height > maxHeight) {
+            if (aspectRatio > 1) {
+                img.width = maxWidth;
+                img.height = maxWidth / aspectRatio;
+            } else {
+                img.height = maxHeight;
+                img.width = maxHeight * aspectRatio;
+            }
+        }
+
+        // Canvas auf die angepasste Bildgröße setzen
         hiddenCanvas.width = img.width;
         hiddenCanvas.height = img.height;
         hiddenCtx.drawImage(img, 0, 0, img.width, img.height);
@@ -45,12 +59,13 @@ function loadImageAsMotif(imageUrl) {
         const colors = extractColors(data);
         updateColorPalette(colors);
 
+        // Raster erstellen
         canvas.innerHTML = ''; // Canvas leeren
         canvas.style.display = 'grid';
-        canvas.style.gridTemplateColumns = `repeat(${width}, ${scaleFactor}px)`;
-        canvas.style.gridTemplateRows = `repeat(${height}, ${scaleFactor}px)`; // Höhe hinzufügen
+        canvas.style.gridTemplateColumns = `repeat(${width}, 1px)`; // 1 Pixel pro Zelle
+        canvas.style.gridTemplateRows = `repeat(${height}, 1px)`; // 1 Pixel pro Zelle
 
-        // Verarbeitung in Blöcken (1x1 Pixel für genaue Darstellung)
+        // Zellen erstellen
         for (let y = 0; y < height; y++) {
             for (let x = 0; x < width; x++) {
                 const index = (y * width + x) * 4;
@@ -61,8 +76,8 @@ function loadImageAsMotif(imageUrl) {
 
                 const cellElement = document.createElement('div');
                 cellElement.className = 'cell';
-                cellElement.style.width = `${scaleFactor}px`;
-                cellElement.style.height = `${scaleFactor}px`;
+                cellElement.style.width = '1px';
+                cellElement.style.height = '1px';
                 cellElement.style.backgroundColor = color;
 
                 cellElement.addEventListener('click', () => {
@@ -72,6 +87,8 @@ function loadImageAsMotif(imageUrl) {
                 canvas.appendChild(cellElement);
             }
         }
+
+        console.log('Raster erfolgreich erstellt.');
     };
 
     img.onerror = () => {
