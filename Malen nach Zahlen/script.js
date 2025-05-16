@@ -63,24 +63,7 @@ function loadImageAsMotif(imageUrl) {
         canvas.style.gridTemplateColumns = `repeat(${width}, ${scaleFactor}px)`;
 
         // Verarbeitung in Blöcken (z. B. 5x5 Pixel)
-        const blockSize = 5;
-        for (let y = 0; y < height; y += blockSize) {
-            for (let x = 0; x < width; x += blockSize) {
-                const color = getAverageColor(data, width, x, y, blockSize);
-
-                const cellElement = document.createElement('div');
-                cellElement.className = 'cell';
-                cellElement.style.width = `${scaleFactor}px`;
-                cellElement.style.height = `${scaleFactor}px`;
-                cellElement.style.backgroundColor = color;
-
-                cellElement.addEventListener('click', () => {
-                    cellElement.style.backgroundColor = selectedColor;
-                });
-
-                canvas.appendChild(cellElement);
-            }
-        }
+        processImageInChunks(data, width, height, scaleFactor, 5);
     };
 
     img.onerror = () => {
@@ -91,12 +74,42 @@ function loadImageAsMotif(imageUrl) {
     img.src = imageUrl;
 }
 
+// Funktion, um die Verarbeitung in Blöcken durchzuführen
+function processImageInChunks(data, width, height, scaleFactor, blockSize) {
+    let y = 0;
+
+    function processRow() {
+        if (y >= height) return; // Verarbeitung abgeschlossen
+
+        for (let x = 0; x < width; x += blockSize) {
+            const color = getAverageColor(data, width, x, y, blockSize);
+
+            const cellElement = document.createElement('div');
+            cellElement.className = 'cell';
+            cellElement.style.width = `${scaleFactor}px`;
+            cellElement.style.height = `${scaleFactor}px`;
+            cellElement.style.backgroundColor = color;
+
+            cellElement.addEventListener('click', () => {
+                cellElement.style.backgroundColor = selectedColor;
+            });
+
+            canvas.appendChild(cellElement);
+        }
+
+        y += blockSize;
+        setTimeout(processRow, 0); // Nächste Zeile asynchron verarbeiten
+    }
+
+    processRow();
+}
+
 // Funktion, um die Durchschnittsfarbe eines Blocks zu berechnen
 function getAverageColor(data, width, startX, startY, blockSize) {
     let r = 0, g = 0, b = 0, count = 0;
 
-    for (let y = startY; y < startY + blockSize; y++) {
-        for (let x = startX; x < startX + blockSize; x++) {
+    for (let y = startY; y < startY + blockSize && y < height; y++) {
+        for (let x = startX; x < startX + blockSize && x < width; x++) {
             const index = (y * width + x) * 4;
             r += data[index];
             g += data[index + 1];
