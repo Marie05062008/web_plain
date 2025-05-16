@@ -57,6 +57,46 @@ function displayUserJokes() {
     });
 }
 
+// Funktion, um einen Witz von der API abzurufen
+async function fetchJoke(category, searchTerm) {
+    let url = `https://v2.jokeapi.dev/joke/${category ? category : 'Any'}`;
+    url += `?lang=de`; // Sprache auf Deutsch setzen
+
+    if (searchTerm) {
+        url += `&contains=${encodeURIComponent(searchTerm)}`;
+    }
+
+    console.log('API-URL:', url); // Debugging-Log
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        console.log('API-Antwort:', data); // Debugging-Log
+
+        if (data.error) {
+            jokeDisplay.textContent = 'Kein Witz gefunden. Versuche es erneut!';
+            return;
+        }
+
+        if (data.type === 'single') {
+            jokeDisplay.textContent = data.joke; // Einzeiler-Witz
+        } else if (data.type === 'twopart') {
+            jokeDisplay.innerHTML = `<p>${data.setup}</p><p><strong>${data.delivery}</strong></p>`; // Zweiteiliger Witz
+        }
+    } catch (error) {
+        console.error('Fehler beim Abrufen des Witzes:', error); // Debugging-Log
+        jokeDisplay.textContent = 'Fehler beim Abrufen des Witzes. Bitte versuche es später erneut.';
+    }
+}
+
+// Event-Listener für den "Erzähl mir einen Witz"-Button
+getJokeButton.addEventListener('click', () => {
+    const category = jokeCategory.value; // Kategorie aus Dropdown
+    const searchTerm = searchCategory.value.trim(); // Suchbegriff aus Eingabefeld
+    console.log('Kategorie:', category, 'Suchbegriff:', searchTerm); // Debugging-Log
+    fetchJoke(category, searchTerm); // API-Aufruf
+});
+
 // Event-Listener für den "Zurück"-Button
 if (backButton) {
     backButton.addEventListener('click', (e) => {
@@ -78,10 +118,9 @@ addJokeButton.addEventListener('click', () => {
     }
 });
 
+// Lade die Witze beim Start
 const jokes = loadUserJokes().map(joke => ({
     ...joke,
     createdByUser: joke.createdByUser || false // Standardwert setzen
 }));
-
-// Lade die Witze beim Start
 displayUserJokes();
