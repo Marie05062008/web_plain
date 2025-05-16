@@ -7,6 +7,9 @@ const addJokeButton = document.getElementById('add-joke');
 const userJokesDisplay = document.getElementById('user-jokes-display');
 const backButton = document.querySelector('.back-button');
 
+// Liste, um die IDs der bereits angezeigten Witze zu speichern
+const displayedJokes = new Set();
+
 // Funktion, um Witze im localStorage zu speichern
 function saveUserJokes(jokes) {
     localStorage.setItem('userJokes', JSON.stringify(jokes));
@@ -109,10 +112,13 @@ async function fetchJoke(category, searchTerm) {
         const data = await response.json();
         console.log('API-Antwort:', data); // Debugging-Log
 
-        if (data.error) {
-            jokeDisplay.textContent = 'Kein Witz gefunden. Versuche es erneut!';
+        if (data.error || displayedJokes.has(data.id)) {
+            // Falls ein Fehler auftritt oder der Witz bereits angezeigt wurde, lade einen neuen
+            fetchJoke(category, searchTerm);
             return;
         }
+
+        displayedJokes.add(data.id); // Witz-ID speichern
 
         if (data.type === 'single') {
             jokeDisplay.textContent = data.joke; // Einzeiler-Witz
@@ -127,7 +133,7 @@ async function fetchJoke(category, searchTerm) {
 
 // Funktion, um einen Witz von der Chuck Norris API abzurufen
 async function fetchChuckNorrisJoke() {
-    const url = 'https://api.chucknorris.io/jokes/random?category={category}';
+    const url = 'https://api.chucknorris.io/jokes/random';
 
     console.log('Chuck Norris API-URL:', url); // Debugging-Log
 
@@ -136,6 +142,13 @@ async function fetchChuckNorrisJoke() {
         const data = await response.json();
         console.log('Chuck Norris API-Antwort:', data); // Debugging-Log
 
+        if (displayedJokes.has(data.id)) {
+            // Falls der Witz bereits angezeigt wurde, lade einen neuen
+            fetchChuckNorrisJoke();
+            return;
+        }
+
+        displayedJokes.add(data.id); // Witz-ID speichern
         jokeDisplay.innerHTML = `<p>${data.value}</p>`;
     } catch (error) {
         console.error('Fehler beim Abrufen des Chuck Norris Witzes:', error); // Debugging-Log
