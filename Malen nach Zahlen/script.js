@@ -27,7 +27,7 @@ function loadImageAsMotif(imageUrl) {
     img.crossOrigin = 'Anonymous'; // Für CORS-freie Bilder
     img.onload = () => {
         const cellSize = 1; // 1x1 Pixel-Auflösung
-        const scaleFactor = 4; // Vergrößerungsfaktor für bessere Sichtbarkeit
+        const scaleFactor = 5; // Vergrößerungsfaktor für bessere Sichtbarkeit
         hiddenCanvas.width = img.width;
         hiddenCanvas.height = img.height;
         hiddenCtx.drawImage(img, 0, 0);
