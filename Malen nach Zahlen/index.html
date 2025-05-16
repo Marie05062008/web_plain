@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malen nach Zahlen</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <a href="#" class="back-button">Zurück</a>
+    <section class="game-section">
+        <h2>Malen nach Zahlen</h2>
+        <div class="controls">
+            <label for="motif-select">Wähle ein Motiv:</label>
+            <select id="motif-select">
+                <option value="flower">Blume</option>
+                <option value="house">Haus</option>
+                <option value="tree">Baum</option>
+            </select>
+            <button id="load-motif">Motiv laden</button>
+        </div>
+        <div class="palette">
+            <h3>Farbauswahl</h3>
+            <div id="color-palette">
+                <button class="color" style="background-color: red;" data-color="red"></button>
+                <button class="color" style="background-color: blue;" data-color="blue"></button>
+                <button class="color" style="background-color: green;" data-color="green"></button>
+                <button class="color" style="background-color: yellow;" data-color="yellow"></button>
+                <button class="color" style="background-color: black;" data-color="black"></button>
+            </div>
+        </div>
+        <div id="canvas-container">
+            <h3>Motiv</h3>
+            <div id="canvas"></div>
+        </div>
+    </section>
+    <script src="script.js"></script>
+</body>
+</html>
