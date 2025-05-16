@@ -25,9 +25,15 @@ loadImageButton.addEventListener('click', () => {
     loadImageAsMotif(imageUrl);
 });
 
+const loadingIndicator = document.getElementById('loading-indicator');
+
 function loadImageAsMotif(imageUrl) {
     const img = new Image();
     img.crossOrigin = 'Anonymous'; // Für CORS-freie Bilder
+
+    // Ladeanzeige einblenden
+    loadingIndicator.style.display = 'block';
+
     img.onload = () => {
         console.log('Bild erfolgreich geladen:', imageUrl);
 
@@ -89,16 +95,21 @@ function loadImageAsMotif(imageUrl) {
         }
 
         console.log('Raster erfolgreich erstellt.');
+
+        // Ladeanzeige ausblenden
+        loadingIndicator.style.display = 'none';
     };
 
     img.onerror = () => {
         console.error('Fehler beim Laden des Bildes:', imageUrl);
         alert('Das Bild konnte nicht geladen werden. Bitte überprüfe die URL.');
+
+        // Ladeanzeige ausblenden
+        loadingIndicator.style.display = 'none';
     };
 
     img.src = imageUrl;
 }
-
 // Funktion, um die Verarbeitung in Blöcken durchzuführen
 function processImageInChunks(data, width, height, scaleFactor, blockSize) {
     let y = 0;
