@@ -44,7 +44,39 @@ function displayUserJokes() {
             ${joke.createdByUser ? '<button class="delete-joke">🗑️ Löschen</button>' : ''}
         `;
 
+        const thumbsUpButton = jokeItem.querySelector('.thumbs-up');
+        const thumbsDownButton = jokeItem.querySelector('.thumbs-down');
         const deleteButton = jokeItem.querySelector('.delete-joke');
+
+        // Like-Funktion
+        thumbsUpButton.addEventListener('click', () => {
+            if (!joke.liked) {
+                joke.thumbsUp++;
+                joke.liked = true;
+                joke.disliked = false;
+            } else {
+                joke.thumbsUp--;
+                joke.liked = false;
+            }
+            saveUserJokes(jokes);
+            displayUserJokes();
+        });
+
+        // Dislike-Funktion
+        thumbsDownButton.addEventListener('click', () => {
+            if (!joke.disliked) {
+                joke.thumbsDown++;
+                joke.disliked = true;
+                joke.liked = false;
+            } else {
+                joke.thumbsDown--;
+                joke.disliked = false;
+            }
+            saveUserJokes(jokes);
+            displayUserJokes();
+        });
+
+        // Lösch-Funktion
         if (deleteButton) {
             deleteButton.addEventListener('click', () => {
                 if (jokes[index].createdByUser) {
@@ -95,7 +127,7 @@ async function fetchJoke(category, searchTerm) {
 
 // Funktion, um einen Witz von der Chuck Norris API abzurufen
 async function fetchChuckNorrisJoke() {
-    const url = 'https://api.chucknorris.io/jokes/random';
+    const url = 'https://api.chucknorris.io/jokes/random?category={category}';
 
     console.log('Chuck Norris API-URL:', url); // Debugging-Log
 
@@ -148,6 +180,8 @@ addJokeButton.addEventListener('click', () => {
 // Lade die Witze beim Start
 const jokes = loadUserJokes().map(joke => ({
     ...joke,
-    createdByUser: joke.createdByUser || false // Standardwert setzen
+    createdByUser: joke.createdByUser || false, // Standardwert setzen
+    liked: joke.liked || false,
+    disliked: joke.disliked || false
 }));
 displayUserJokes();
