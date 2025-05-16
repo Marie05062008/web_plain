@@ -114,7 +114,7 @@ function getAverageColor(data, width, startX, startY, blockSize) {
 
 // Funktion, um alle Farben aus den Bilddaten zu extrahieren
 function extractColors(data) {
-    const colorMap = new Map();
+    const uniqueColors = new Set();
 
     for (let i = 0; i < data.length; i += 4) {
         const r = data[i];
@@ -122,16 +122,13 @@ function extractColors(data) {
         const b = data[i + 2];
         const color = `rgb(${r}, ${g}, ${b})`;
 
-        if (!colorMap.has(color)) {
-            colorMap.set(color, 1);
-        }
+        uniqueColors.add(color); // Fügt nur eindeutige Farben hinzu
     }
 
-    // Gib die häufigsten Farben zurück
-    return [...colorMap.keys()];
+    // Gib die Farben als Array zurück
+    return Array.from(uniqueColors);
 }
 
-// Funktion, um die Farbpalette zu aktualisieren
 function updateColorPalette(colors) {
     colorPalette.innerHTML = ''; // Palette leeren
 
