@@ -134,7 +134,6 @@ async function fetchJoke(category, searchTerm) {
 // Funktion, um einen Witz von der Chuck Norris API abzurufen
 async function fetchChuckNorrisJoke() {
     const url = 'https://api.chucknorris.io/jokes/random';
-    url += `?lang=de`; // Sprache auf Deutsch setzen
 
     console.log('Chuck Norris API-URL:', url); // Debugging-Log
 
@@ -156,9 +155,30 @@ async function fetchChuckNorrisJoke() {
 
         displayedJokes.add(data.id); // Witz-ID speichern
         jokeDisplay.innerHTML = `<p>${data.value}</p>`;
+
+         // Übersetze den Witz ins Deutsche
+        const translatedJoke = await translateToGerman(data.value);
+        jokeDisplay.innerHTML = `<p>${translatedJoke}</p>`;
+
     } catch (error) {
         console.error('Fehler beim Abrufen des Chuck Norris Witzes:', error); // Debugging-Log
         jokeDisplay.textContent = 'Fehler beim Abrufen des Witzes. Bitte versuche es später erneut.';
+    }
+}
+
+// Funktion, um Text ins Deutsche zu übersetzen (Beispiel mit einer Übersetzungs-API)
+async function translateToGerman(text) {
+    const translateUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|de`;
+
+    try {
+        const response = await fetch(translateUrl);
+        const data = await response.json();
+        console.log('Übersetzungs-API-Antwort:', data); // Debugging-Log
+
+        return data.responseData.translatedText || text; // Rückgabe der Übersetzung oder des Originaltexts
+    } catch (error) {
+        console.error('Fehler bei der Übersetzung:', error); // Debugging-Log
+        return text; // Rückgabe des Originaltexts bei Fehler
     }
 }
 
