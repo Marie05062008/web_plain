@@ -2,6 +2,7 @@ const motifSelect = document.getElementById('motif-select');
 const loadMotifButton = document.getElementById('load-motif');
 const canvas = document.getElementById('canvas');
 const colorPalette = document.getElementById('color-palette');
+const backButton = document.querySelector('.back-button'); // Zurück-Button
 
 let selectedColor = 'black'; // Standardfarbe
 
@@ -18,6 +19,20 @@ loadMotifButton.addEventListener('click', () => {
     const motif = motifSelect.value;
     loadMotif(motif);
 });
+
+// Event-Listener für den Zurück-Button
+if (backButton) {
+    backButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (document.referrer) {
+            // Zur vorherigen Seite zurückkehren
+            window.history.back();
+        } else {
+            // Standardseite laden, falls keine vorherige Seite existiert
+            window.location.href = 'index.html';
+        }
+    });
+}
 
 // Funktion, um ein Motiv zu laden
 function loadMotif(motif) {
