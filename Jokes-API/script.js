@@ -139,12 +139,17 @@ async function fetchChuckNorrisJoke() {
 
     try {
         const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP-Fehler! Status: ${response.status}`);
+        }
+
         const data = await response.json();
         console.log('Chuck Norris API-Antwort:', data); // Debugging-Log
 
+        // Überprüfen, ob der Witz bereits angezeigt wurde
         if (displayedJokes.has(data.id)) {
-            // Falls der Witz bereits angezeigt wurde, lade einen neuen
-            fetchChuckNorrisJoke();
+            console.log('Witz bereits angezeigt, lade einen neuen...');
+            fetchChuckNorrisJoke(); // Rekursiver Aufruf, um einen neuen Witz zu laden
             return;
         }
 
